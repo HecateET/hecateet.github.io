@@ -11,6 +11,7 @@ module.exports = {
   themeConfig: {
     subSidebar: 'auto',
     logo: "/assets/img/logo.png",
+    base: '/ayuan-blog/',
     nav: [
       { text: "首页", link: "/" },
       {
