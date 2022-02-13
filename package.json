@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "docs:dev": "vuepress dev docs",
-        "docs:build": "vuepress build docsß",
+        "docs:build": "vuepress build docs",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": "git+https://github.com/HecateET/hecateet.github.io.git",
@@ -17,5 +17,8 @@
     "homepage": "https://github.com/HecateET/hecateet.github.io#readme",
     "devDependencies": {
         "vuepress": "^1.9.7"
+    },
+    "dependencies": {
+        "vuepress-theme-reco": "^1.6.11"
     }
 }
