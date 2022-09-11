@@ -1,4 +1,25 @@
 module.exports = {
+  head:[
+    [
+        'script',{},`
+        var _hmt = _hmt || [];
+        (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?d7384eea898f82136bb26f27fb75c1e8";
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(hm, s);
+        })();
+        `
+    ]
+  ],
+   plugins: [
+    [
+      '@vuepress/google-analytics',
+      {
+        'ga': '' // UA-00000000-0
+      }
+    ]
+  ],
   theme: "reco",
   locales: {
     "/": {
@@ -12,6 +33,7 @@ module.exports = {
     subSidebar: 'auto',
     logo: "/assets/img/logo.png",
     base: '/ayuan-blog/',
+    lastUpdated:'上次更新：',//上次更新
     nav: [
       { text: "首页", link: "/" },
       {
