@@ -1,5 +1,5 @@
 ---
-title: leetcode-283题解
+title: leetcode-283.移动零：数组两次遍历
 author: 阿源 Hecate
 date: '2022-02-12'
 ---

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>《深入浅出Vue.js》day03:如何变化侦测Array？ | 阿源 Hecate</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    <link rel="icon" href="/favicon.ico">
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?d7384eea898f82136bb26f27fb75c1e8";
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+    <meta name="description" content="阿源 Hecate的博客 记录前端学习、日常生活、阅读、美食、运动等感想日记">
+    
+    <link rel="preload" href="/assets/css/0.styles.92648794.css" as="style"><link rel="preload" href="/assets/js/app.585318e1.js" as="script"><link rel="preload" href="/assets/js/3.db9065b5.js" as="script"><link rel="preload" href="/assets/js/1.382b7b04.js" as="script"><link rel="preload" href="/assets/js/25.cafc22d8.js" as="script"><link rel="prefetch" href="/assets/js/10.27918747.js"><link rel="prefetch" href="/assets/js/11.c0398340.js"><link rel="prefetch" href="/assets/js/12.9f79beb6.js"><link rel="prefetch" href="/assets/js/13.ec35b521.js"><link rel="prefetch" href="/assets/js/14.159f3fed.js"><link rel="prefetch" href="/assets/js/15.829a4930.js"><link rel="prefetch" href="/assets/js/16.236c1d76.js"><link rel="prefetch" href="/assets/js/17.f2e983a7.js"><link rel="prefetch" href="/assets/js/18.7ad6c2db.js"><link rel="prefetch" href="/assets/js/19.b6897062.js"><link rel="prefetch" href="/assets/js/20.2ca79ff7.js"><link rel="prefetch" href="/assets/js/21.7bf81125.js"><link rel="prefetch" href="/assets/js/22.eed37833.js"><link rel="prefetch" href="/assets/js/23.265a9978.js"><link rel="prefetch" href="/assets/js/24.cd8af0dc.js"><link rel="prefetch" href="/assets/js/26.38eb1421.js"><link rel="prefetch" href="/assets/js/27.c6d817e2.js"><link rel="prefetch" href="/assets/js/28.55ede254.js"><link rel="prefetch" href="/assets/js/29.d4161724.js"><link rel="prefetch" href="/assets/js/30.b588c331.js"><link rel="prefetch" href="/assets/js/31.d0a60836.js"><link rel="prefetch" href="/assets/js/4.1a72345b.js"><link rel="prefetch" href="/assets/js/5.6d99caa7.js"><link rel="prefetch" href="/assets/js/6.14cd16ee.js"><link rel="prefetch" href="/assets/js/7.a1fa8449.js"><link rel="prefetch" href="/assets/js/8.11230af2.js"><link rel="prefetch" href="/assets/js/9.fe75b25c.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.92648794.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container" data-v-5bb33761><div data-v-5bb33761><div class="password-shadow password-wrapper-out" style="display:none;" data-v-59e6cb88 data-v-5bb33761 data-v-5bb33761><h3 class="title" data-v-59e6cb88>阿源 Hecate</h3> <p class="description" data-v-59e6cb88>阿源 Hecate的博客 记录前端学习、日常生活、阅读、美食、运动等感想日记</p> <label id="box" class="inputBox" data-v-59e6cb88><input type="password" value="" data-v-59e6cb88> <span data-v-59e6cb88>Konck! Knock!</span> <button data-v-59e6cb88>OK</button></label> <div class="footer" data-v-59e6cb88><span data-v-59e6cb88><i class="iconfont reco-theme" data-v-59e6cb88></i> <a target="blank" href="https://vuepress-theme-reco.recoluan.com" data-v-59e6cb88>vuePress-theme-reco</a></span> <span data-v-59e6cb88><i class="iconfont reco-copyright" data-v-59e6cb88></i> <a data-v-59e6cb88><!---->
+          
+        <!---->
+        2022
+      </a></span></div></div> <div class="hide" data-v-5bb33761><header class="navbar" data-v-5bb33761><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/logo.png" alt="阿源 Hecate" class="logo"> <span class="site-name">阿源 Hecate</span></a> <div class="links"><div class="color-picker"><a class="color-button"><i class="iconfont reco-color"></i></a> <div class="color-picker-menu" style="display:none;"><div class="mode-options"><h4 class="title">Choose mode</h4> <ul class="color-mode-options"><li class="dark">dark</li><li class="auto active">auto</li><li class="light">light</li></ul></div></div></div> <div class="search-box"><i class="iconfont reco-search"></i> <input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link"><i class="undefined"></i>
+  首页
+</a></div><div class="nav-item"><a href="https://github.com/HecateET" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="undefined"></i>
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="https://juejin.cn/user/465848660675048/posts" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="undefined"></i>
+  掘金
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="https://www.xiaohongshu.com/user/profile/5e94f5de000000000100a3b1?xhsshare=CopyLink&amp;appuid=5e94f5de000000000100a3b1&amp;apptime=1644722473" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="undefined"></i>
+  美食日记｜小红书
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="undefined"></i>
+      阿源 Hecate
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://github.com/HecateET" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="undefined"></i>
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://leetcode.cn/u/hecate-d/" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="undefined"></i>
+  LeetCode
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask" data-v-5bb33761></div> <aside class="sidebar" data-v-5bb33761><div class="personal-info-wrapper" data-v-1fad0c41 data-v-5bb33761><!----> <!----> <div class="num" data-v-1fad0c41><div data-v-1fad0c41><h3 data-v-1fad0c41>20</h3> <h6 data-v-1fad0c41>文章</h6></div> <div data-v-1fad0c41><h3 data-v-1fad0c41>0</h3> <h6 data-v-1fad0c41>标签</h6></div></div> <ul class="social-links" data-v-1fad0c41></ul> <hr data-v-1fad0c41></div> <nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link"><i class="undefined"></i>
+  首页
+</a></div><div class="nav-item"><a href="https://github.com/HecateET" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="undefined"></i>
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="https://juejin.cn/user/465848660675048/posts" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="undefined"></i>
+  掘金
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="https://www.xiaohongshu.com/user/profile/5e94f5de000000000100a3b1?xhsshare=CopyLink&amp;appuid=5e94f5de000000000100a3b1&amp;apptime=1644722473" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="undefined"></i>
+  美食日记｜小红书
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="undefined"></i>
+      阿源 Hecate
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://github.com/HecateET" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="undefined"></i>
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://leetcode.cn/u/hecate-d/" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="undefined"></i>
+  LeetCode
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <!----></nav> <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><a href="/" class="sidebar-heading clickable router-link-active"><span>自我介绍下</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/" aria-current="page" class="sidebar-link">关于阿源的七七八八</a></li><li><a href="/summary/ayuan-2021.html" class="sidebar-link">一张图看程序媛阿源的2021个人年度流水账</a></li></ul></section></li><li><section class="sidebar-group depth-0"><a href="/vueblog/part-01" class="sidebar-heading clickable open"><span>深入浅出Vue.js</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/vueblog/part-01.html" class="sidebar-link">《深入浅出Vue.js》Day-01:元编程概念+Vue解决问题的思路+什么渐进式框架</a></li><li><a href="/vueblog/part-02.html" class="sidebar-link">《深入浅出Vue.js》Day02:如何变化侦测Object？</a></li><li><a href="/vueblog/part-03.html" aria-current="page" class="active sidebar-link">《深入浅出Vue.js》Day03:如何变化侦测Array？</a></li></ul></section></li><li><section class="sidebar-group depth-0"><a href="/vuejs3.0/part-about" class="sidebar-heading clickable"><span>Vue.js设计与实现</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/vuejs3.0/part-about.html" class="sidebar-link">《Vue.js设计与实现》前言：全书讲什么？</a></li><li><a href="/vuejs3.0/part-01.html" class="sidebar-link">《Vue.js设计与实现》第1章 权衡的艺术</a></li><li><a href="/vuejs3.0/part-02.html" class="sidebar-link">《Vue.js设计与实现》第2章 框架设计的核心要素</a></li><li><a href="/vuejs3.0/part-03.html" class="sidebar-link">《Vue.js设计与实现》第3章 Vue.js3的设计思路</a></li><li><a href="/vuejs3.0/part-04.html" class="sidebar-link">《Vue.js设计与实现》第4章 响应系统的作用与实现</a></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><a href="/handbook/index" class="sidebar-heading clickable"><span>摸爬滚打的算法之旅</span> <span class="arrow right"></span></a> <!----></section></li></ul> </aside> <div class="password-shadow password-wrapper-in" style="display:none;" data-v-59e6cb88 data-v-5bb33761><h3 class="title" data-v-59e6cb88>《深入浅出Vue.js》day03:如何变化侦测Array？</h3> <!----> <label id="box" class="inputBox" data-v-59e6cb88><input type="password" value="" data-v-59e6cb88> <span data-v-59e6cb88>Konck! Knock!</span> <button data-v-59e6cb88>OK</button></label> <div class="footer" data-v-59e6cb88><span data-v-59e6cb88><i class="iconfont reco-theme" data-v-59e6cb88></i> <a target="blank" href="https://vuepress-theme-reco.recoluan.com" data-v-59e6cb88>vuePress-theme-reco</a></span> <span data-v-59e6cb88><i class="iconfont reco-copyright" data-v-59e6cb88></i> <a data-v-59e6cb88><!---->
+          
+        <!---->
+        2022
+      </a></span></div></div> <div data-v-5bb33761><div data-v-5bb33761><main class="page"><section style="display:;"><div class="page-title"><h1 class="title">《深入浅出Vue.js》day03:如何变化侦测Array？</h1> <div data-v-8a445198><i class="iconfont reco-account" data-v-8a445198><span data-v-8a445198>阿源 Hecate</span></i> <i class="iconfont reco-date" data-v-8a445198><span data-v-8a445198>2022/3/21</span></i> <!----> <!----></div></div> <div class="theme-reco-content content__default"><h1 id="前言"><a href="#前言" class="header-anchor">#</a> 前言：</h1> <p>本篇文章纯属个人看书学习的学习笔记， 有不妥的地方请多多评论指导～</p> <ul><li>学习Array的变化侦测</li> <li>Array是如何追踪变化</li> <li>在Array中拦截器是如使用</li> <li>收集依赖</li> <li>获取Observer实力</li> <li>侦测Array的新增和元有元素的变化</li></ul> <h1 id="_1、array的变化侦测"><a href="#_1、array的变化侦测" class="header-anchor">#</a> 1、Array的变化侦测</h1> <p>举例子:</p> <div class="language- extra-class"><pre class="language-text"><code>this.list.push(1)
+</code></pre></div><p>在Object中的侦测方式是通过<code>getter/setter</code>实现的，但是上面这个例子使用了<code>push</code>方法来改变数组，并不会触发<code>getter/setter</code>方法。</p> <p><strong>因为可以通过<code>Array</code>原型上的方法来改变数组的内容， 所以<code>Object</code>那种通过<code>getter/setter</code>的实现方式就行不通了。</strong></p> <h1 id="_2、array如何追踪变化"><a href="#_2、array如何追踪变化" class="header-anchor">#</a> 2、Array如何追踪变化</h1> <p>注意：ES6之前，<code>JavaScript</code>并没有提供元编程的能力， 也就是<strong>没有提供可以拦截原型方法的能力。</strong> 但是我们<strong>可以用自定义的方法去覆盖原生的原型方法。</strong></p> <hr> <p>例如：用一个拦截器去覆盖<code>Array.prototype</code>。之后每当使用Array原型上的方法操作数组的时候， 都是执行的是拦截器中提供的方法。这样通过拦截器，我们就可以追踪到Array的变化了.</p> <p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1956a15fd4ca4d518d2540b12d3ec05e~tplv-k3u1fbpfcp-zoom-1.image" alt=""></p> <p>使用拦截器覆盖原生方法。</p> <h1 id="_3、拦截器"><a href="#_3、拦截器" class="header-anchor">#</a> 3、拦截器</h1> <p>如何实现这个拦截器？拦截器其实就是一个和<code>Array.prototype</code>一样的<code>Object</code>,里面包含的属性一摸一样，只不过这个<code>Object</code>中某些可以改变数组自身内容的方法是我们<strong>处理过的</strong>。</p> <p>在JavaScript中， Array原型上可以改变数组自身内容的方法有7个：<code>push、pop、shift、unshift、splice、sort和reverse.</code></p> <p>实现拦截器的代码如下：</p> <div class="language- extra-class"><pre class="language-text"><code>const arrayProto = Array.prototype
+export const arrayMethods = Object.create(arrayProto)
+
+;[
+  'push',
+  'pop',
+  'shift',
+  'unshift',
+  'splice',
+  'sort',
+  'reverse'
+].forEach((method)=&gt;{
+  //缓存原始方法
+  const original = arrayProto[method]
+  Object.defineProperty(arrayMethods,method,{
+    value:function mutator(...args){
+      return original.apply(this,args)
+    },
+    enumerable:false,
+    writable:true,
+    configurable:true
+  })
+})	
+</code></pre></div><p><code>arrayMethods</code>继承自<code>Array.prototype</code>，拥有它的所有功能。用<code>arrayMethods</code>去覆盖`Array.prototype.</p> <p>arrayMethods<code>上使用</code>Object.defineProperty`方法将可以改变原数组自身内容的方法进行封装。</p> <p>当使用push方法的时候， 其实是调用的<code>arrayMethods.push</code>，对应的就是执行<code>mutator</code>函数。</p> <p>在<code>mutator</code>执行<code>original</code>即原生<code>Array.prototype</code>上的方法， 来做它对应该做的事儿。</p> <p>所以，我们可以在<code>mutator</code>函数中做一些其他的事儿， 例如新增发送变化的通知等。</p> <h1 id="_4、使用拦截器覆盖array原型"><a href="#_4、使用拦截器覆盖array原型" class="header-anchor">#</a> 4、使用拦截器覆盖Array原型</h1> <p>想要让拦截器生效， 就需要用它去覆盖<code>Array.prototype</code>。但是又不能直接去覆盖，因为这样会污染全局的<code>Array</code>.</p> <p>实际上希望拦截只针对哪些被侦测了变化的数据生效，换句话说就是希望拦截器只能覆盖哪些响应式数组的原型（例如7个可以改变原数组的方法）。</p> <p>将数据变成响应式的， 需要通过<code>Observer</code>，所以只要在<code>Observer</code>中使用拦截器覆盖那些即将被转换为响应式<code>Array</code>类型数据的原型就可以了。</p> <p>例如：</p> <div class="language- extra-class"><pre class="language-text"><code>export class Observer{
+  constructor(value){
+    this.value = value;
+    
+    if(Array.isArray(value)){ //新增兼容数组
+      value.__proto__ = arrayMethods
+    }else{
+      this.walk(value)
+    }
+  }
+}
+</code></pre></div><p>\</p> <p><code>value.__proto__ = arrayMethods</code> 的作用就是将拦截器（加工后具备拦截功能的<code>arrayMethods</code>）赋值给<code>value.__proto__</code>，通过<code>__proto__</code>可以巧妙地实现覆盖value原型的功能。</p> <p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4c49acfc81684b99875d7128931421d1~tplv-k3u1fbpfcp-zoom-1.image" alt=""></p> <p><code>__proto__</code><strong>是<code>Object.getPrototypeOf</code> 和 <code>Object.setPrototypeOf</code>的早期实现，所以使用ES6中的，<code>Object.setPrototypeOf</code>来代替</strong> <code>__proto__</code> <strong>完全可以实现一样的效果。</strong></p> <p>\</p> <h1 id="_5、将拦截器方法挂载到数组的属性上"><a href="#_5、将拦截器方法挂载到数组的属性上" class="header-anchor">#</a> 5、将拦截器方法挂载到数组的属性上</h1> <p><code>__proto__</code>访问原型的方式，并不是所有浏览器都支持， 所以我们需要处理不能使用<code>__proto__</code>的情况 <strong>。</strong></p> <hr> <p>Vue的做法很简单粗暴：如果不能使用 <code>__proto__</code> <strong>，</strong> 就直接讲<code>arrayMethods</code>身上的这些方法设置到被侦测的数组上：</p> <div class="language- extra-class"><pre class="language-text"><code>import {arrayMethods} from './array'
+
+//判断__proto__是否可用
+const hasProto = '__proto__' in {}
+const arrayKeys = Object.getOwnPropertyNames(arrayMethods)
+
+export class Observer{
+  constructor(value){
+    this.value = value;
+    
+    if(Array.isArray(value)){ //新增兼容数组
+      const augment = hasPro
+         ? protoAugment
+         : copyAugment
+      augment(value,arrayMethods,arrayKey)
+    }else{
+      this.walk(value)
+    }
+  }
+  ...
+}
+  
+
+function protoAugment(target,src,keys){
+  target.__proto__ = src
+}
+
+function copyAugment(target,src,keys){
+  for(let i=0,l=keys.length; i&lt;l;i++){
+    const key = keys[i]
+    def(target,key,src[key])
+  }
+}
+</code></pre></div><p><code>hasProto</code>判断浏览器是否支持<code>__proto__</code> <strong>：</strong> 如果支持则用<code>protoAugment</code>来覆盖原型；如果不支持，则调用<code>copyAugment</code>函数将拦截器挂在到value上。</p> <p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9645ecbb37c346b0ad18895fb80b7e7a~tplv-k3u1fbpfcp-zoom-1.image" alt=""></p> <p>当访问一个对象的方法是你， 只有其自身不存在这个方法，才回去它的原型上找到这个方法。</p> <h1 id="_6、如何收集依赖"><a href="#_6、如何收集依赖" class="header-anchor">#</a> 6、如何收集依赖</h1> <p>之所以创建拦截器，<strong>本质上是为了得到一种能力，一种当数组的内容发生变化时得到通知的能力</strong>。</p> <p><strong>Object中，是在<code>defineReactive</code>中的<code>getter</code>里使用Dep收集的，每个<code>key</code>都会有一个对应的<code>Dep</code>列表来存储依赖。</strong></p> <hr> <p>==&gt; 在getter中收集依赖，依赖被存储在Dep里</p> <p>而数组在哪里收集依赖？</p> <ul><li>数组也是在getter</li> <li>而<code>Array</code>的依赖和<code>Object</code>一样，也在<code>defineReactive</code>中收集：</li> <li><code>Array</code>在<code>getter</code> 中收集依赖， 在拦截器中触发依赖</li></ul> <div class="language- extra-class"><pre class="language-text"><code>function defineReactive(data,key,val){
+  if(typeof val === 'object') new Observer(val)
+  let dep = new Dep();
+  Object.defineProperty(data,key,{
+    enumerable:true,
+    configurable:true,
+    get:function(){
+      dep.depend();//在这里收集Array的依赖
+      return val;
+    },
+    set:function(newVal){
+      if(val === newVal){
+        return
+      }
+      dep.notify()
+      val = newVal
+    }
+  })
+}	
+</code></pre></div><h1 id="_7、依赖列表存在哪儿"><a href="#_7、依赖列表存在哪儿" class="header-anchor">#</a> 7、依赖列表存在哪儿</h1> <p><code>Vue.js</code>把<code>Array</code>的依赖存放在<code>Observer</code>中：</p> <div class="language- extra-class"><pre class="language-text"><code>export class Observer{
+  constructor(value){
+    this.value = value
+    this.dep = new Dep() //新增Dep
+    if(Array.isArray(value)){
+    
+      const augment = hasProto ? protoAugment:copyAugment
+      augment(value,arrayMethods,arrayKey)
+    }else{
+      this.walk(value)
+    }
+  }
+  ...
+}
+</code></pre></div><p>为什么数组的<code>dep</code>（依赖）要保存在<code>Observer</code>实例上呢？</p> <ul><li>因为<code>getter</code>中可以访问到<code>Observe</code>实例</li> <li>同时在<code>Array</code>拦截器中也可以访到<code>Observe</code>实例</li></ul> <h1 id="_8、收集依赖"><a href="#_8、收集依赖" class="header-anchor">#</a> 8、收集依赖</h1> <div class="language- extra-class"><pre class="language-text"><code>function defineReactive(data,key,val){
+  let childOb = observe(val) //修改
+  let dep = new Dep();
+  Object.defineProperty(data,key,{
+    enumerable:true,
+    configurale:true,
+    get:function(){
+      dep.depend()
+      
+      //新增
+      if(childOb){
+        childOb.dep.depend();
+      }
+      return val;
+    }
+    set:function(newVal){
+      if(val === newVal) return
+      dep.notify()
+      val = newVal
+    }
+  })
+  
+}
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>// 尝试为value创建一个Observer实例
+// 如果创建成功，直接返回新创建的Observer实例
+// 如果value已经存在一个Observer实例，则直接返回它
+
+export function observe(value,asRootData){
+  if(!isObject(value)) return
+  let ob
+  if(hasOwn(value,'__ob__') &amp;&amp; value.__ob__ instanceof Observer){
+    ob = value.__ob__
+  }else{
+    ob = new Observer(value)
+  }
+  return ob;
+}
+</code></pre></div><p>上述代码中， 新增了函数<code>observe</code>：</p> <ul><li><code>observe</code>函数尝试创建一个<code>Observer</code>实例</li> <li>如果<code>value</code>已经是响应式数据， 则不需要再次创建<code>Observer</code>实例</li> <li>已有时，直接返回已创建的<code>Observer</code>实例，避免重复侦测<code>value</code>变化的问题。</li></ul> <p>通过这样的方式可以为数组收集依赖。</p> <h1 id="_9、在拦截器中获取observer实例"><a href="#_9、在拦截器中获取observer实例" class="header-anchor">#</a> 9、在拦截器中获取Observer实例</h1> <p>如何在拦截器中访问<code>Observer</code>实例？</p> <ul><li>因为<code>Array</code>拦截器是对原型的一种封装，所以可以在拦截器中访问到<code>this</code>（当前正在被操作的数组）</li> <li><code>dep</code>保存在<code>Observer</code>中，所以需要在<code>this</code>上读到<code>Observer</code>的实例</li></ul> <div class="language- extra-class"><pre class="language-text"><code>//工具函数
+function def(obj,key,val,enumerable){
+  Object.defineProperty(obj,key,{
+    value:val,
+    enumerable:!!enumerable,
+    writable:true,
+    configurable:true,
+  })
+}
+
+export class Observer{
+  constructor(value){
+    this.value = value;
+    this.dep = new Dep();
+    def(value,'__ob__',this)
+    
+    if(Array.isArray(value)){
+      const augment = hasProto ? protoAugment:copyAugment;
+      augment(value,arrayMethods,arrayKey)
+    }else {
+      this.walk(value)
+    }
+  }
+  ...
+}
+</code></pre></div><p>在<code>Observer</code>中新增了一段代码，它可以在<code>value</code>上新增一个不可枚举的属性 <code>__ob__</code>，这个属性的值就是当前<code>Observer</code>的实例。</p> <p>之后就可以通过数组数据的 <code>__ob__</code>属性拿到<code>Observer</code>实例，然后就可以拿到 <code>__ob__</code>上的<code>dep</code>。</p> <p><code>__ob__</code>还可以用来标记当前value是否已经被Observer转换成了响应式数据。</p> <p>换句话说：</p> <ul><li>所有被侦测了变化的数据身上都会有一个<code>__ob__</code>属性来表示它们是响应式的。</li> <li>通过<code>__ob__</code>判断</li></ul> <ul><li><ul><li>如果value是响应式的，则直接返回 <code>__ob__</code></li> <li>如果不是响应式的，则使用<code>new Observer</code>来将数据转换成响应式数据。</li></ul></li></ul> <ul><li>当value身上被标记了<code>__ob__</code>之后，就可以通过<code>value.__ob__</code>来访问<code>Observer</code>实例</li> <li>如果是Array拦截器，因拦截器是原型方法</li></ul> <ul><li><ul><li>可直接通过<code>this.__ob__</code>来访问<code>Observer</code>实例。</li></ul></li></ul> <div class="language- extra-class"><pre class="language-text"><code>;[
+  'push',
+  'pop',
+  'shift',
+  'unshift',
+  'splice',
+  'sort',
+  'reverse'
+].forEach((method)=&gt;{
+  //缓存原始方法
+  const original = arrayProto[method]
+  Object.defineProperty(arrayMethods,method,{
+    value:function mutator(...args){
+      const ob = this.__ob__ //新增
+      return original.apply(this,args)
+    },
+    enumerable:false,
+    writable:true,
+    configurable:true
+  })
+})	
+</code></pre></div><p>我们在mutator函数里通过this.<strong>ob</strong> 来获取Observer实例。</p> <h1 id="_10、向数组的依赖发送通知"><a href="#_10、向数组的依赖发送通知" class="header-anchor">#</a> 10、向数组的依赖发送通知</h1> <p>当侦测到数组发生变化时，会向依赖发送通知。</p> <ul><li>首先要可以访问到依赖。</li> <li>在拦截器中访问<code>Observer</code>实例</li> <li>只需在<code>Observer</code>实例中拿到<code>dep</code>属性</li> <li>最后直接发通知即可</li></ul> <div class="language- extra-class"><pre class="language-text"><code>;[
+  'push',
+  'pop',
+  'shift',
+  'unshift',
+  'splice',
+  'sort',
+  'reverse'
+].forEach((method)=&gt;{
+  //缓存原始方法
+  const original = arrayProto[method]
+  dep(arrayMethods,method,function mutator(...args){
+    const result = original.apply(this,args)
+    const ob = this.__ob__
+    ob.dep.notify() //向依赖发送消息
+    return result;
+  })
+})	
+</code></pre></div><p>上面的代码中，我们调用了<code>ob.dep.notify()</code>去通知依赖<code>（Watcher）</code>数据发生了改变。</p> <h1 id="_11、侦测数组中元素的变化"><a href="#_11、侦测数组中元素的变化" class="header-anchor">#</a> 11、侦测数组中元素的变化</h1> <p>所有响应式数据的子数据都要侦测，不论是Object中的数据还是Array中的数据。</p> <p>如何侦测<strong>所有数据子集</strong>的变化？</p> <p>在Observer中新增一些处理， 让其可以将Array也转换成响应式的：</p> <div class="language- extra-class"><pre class="language-text"><code>export class Observer{
+  constructor(value){
+    this.value = value;
+    def(value,'__ob__',this)
+    
+  
+    if(Array.isArray(value)){ //新增兼容数组
+      this.observerArray(value)
+    }else{
+      this.walk(value)
+    }
+  }
+  ...
+}
+  
+//侦测Array中的每一项
+ observerArray(items){
+   for(let i=0,l=items.length;i&lt;l;i++){
+     observe(items[i])
+   }
+   ...
+ }
+</code></pre></div><p>这里新增了<code>observeArray</code>方法,</p> <ul><li>其作用是循环<code>Array</code>中的每一项，</li> <li>执行<code>observe</code>函数来侦测变化。</li></ul> <p>前面介绍过<code>observe</code>函数，其实就是将数组中的每个元素都执行一遍<code>new Observer</code>，这很明显是一个递归的过程。</p> <h1 id="_12、侦测新增元素的变化"><a href="#_12、侦测新增元素的变化" class="header-anchor">#</a> 12、侦测新增元素的变化</h1> <h2 id="_12-1-获取新增元素"><a href="#_12-1-获取新增元素" class="header-anchor">#</a> 12.1 获取新增元素</h2> <p>在上面的代码中，我们通过<code>switch</code>对<code>method</code>进行判断，如果<code>method</code>是<code>push</code>、<code>unshift</code>、<code>splice</code>这种可以新增数组元素的方法，那么从<code>args</code>中将新增元素取出来，暂存在<code>inserted</code>中。</p> <div class="language- extra-class"><pre class="language-text"><code>;[
+  'push',
+  'pop',
+  'shift',
+  'unshift',
+  'splice',
+  'sort',
+  'reverse'
+].forEach((method)=&gt;{
+  //缓存原始方法
+  const original = arrayProto[method]
+  def(arrayMethods,method,function mutator(...args){
+    const result = original.apply(this,args)
+    const ob = this.__ob__
+    let inserted
+    switch(method){
+      case 'push':
+      case 'unshift':
+        inserted = args;
+        break;
+      case 'splice':
+        inserted = args.slice(2)
+        break;
+    }
+    ob.dep.notify() //向依赖发送消息
+    return result;
+  })
+})	
+</code></pre></div><p>接下来，我们要使用<code>Observer</code>把<code>inserted</code>中的元素转换成响应式的。</p> <h2 id="_12-2-使用observer侦测新增元素"><a href="#_12-2-使用observer侦测新增元素" class="header-anchor">#</a> 12.2 使用Observer侦测新增元素</h2> <p>我们可以在拦截器中通过<code>this</code>访问到<code>__ob__</code>，然后调用 <code>__ob__</code>上的<code>observeArray</code>方法就可以了:</p> <div class="language- extra-class"><pre class="language-text"><code>;[
+  'push',
+  'pop',
+  'shift',
+  'unshift',
+  'splice',
+  'sort',
+  'reverse'
+].forEach((method)=&gt;{
+  //缓存原始方法
+  const original = arrayProto[method]
+  def(arrayMethods,method,function mutator(...args){
+    const result = original.apply(this,args)
+    const ob = this.__ob__
+   
+    let inserted
+    switch(method){
+      case 'push':
+      case 'unshift':
+        inserted = args;
+        break;
+      case 'splice':
+        inserted = args.slice(2)
+        break;
+    }
+    if(inserted) ob.observeArray(inserted) //新增
+    ob.dep.notify() //向依赖发送消息
+    return result;
+  })
+})	
+</code></pre></div><p>上述代码中，我们从<code>this.__ob__</code> 上拿到<code>Observer</code>实例后，如果有新增元素，则使用<code>ob.observeArray</code>来侦测这些新增元素的变化。</p> <h1 id="_13、关于array的问题"><a href="#_13、关于array的问题" class="header-anchor">#</a> 13、关于Array的问题</h1> <p>因为Vue对Array的变化侦测是<strong>通过拦截原型</strong>的方式实现的，所以有些数组操作Vue.js是拦截不到的，比如：</p> <div class="language- extra-class"><pre class="language-text"><code>this.list[0] = 2
+</code></pre></div><p>修改数组中的第一个元素的值，无法检测到数组的变化，所以并不会触发<code>re-render</code>或<code>watch</code></p> <p>再例如：</p> <div class="language- extra-class"><pre class="language-text"><code>this.list.length = 0;
+</code></pre></div><p>这个清空数组操作也无法侦测到数组的变化，所以也不会触发<code>re-render</code>或<code>watch</code>等。</p> <p>因为<code>Vue.js</code>的实现方式决定了无法对上面举的两个例子做拦截，也就没有办法响应.</p> <p>在ES6之前，无法做到模拟数组的原生行为，所以拦截不到也是没有办法的事情。</p> <p>ES6提供了元编程的能力，所以有能力拦截，现在的<code>Vue3</code>就是使用ES6提供的<code>Proxy</code>来实现这部分功能，从而解决这个问题。</p> <h1 id="_14、总结"><a href="#_14、总结" class="header-anchor">#</a> 14、总结</h1> <p>1、<code>Array</code>追踪变化的方式和<code>Object</code>不一样。</p> <ul><li>因为它是通过方法来改变内容的，所以我们通过创建拦截器去覆盖数组原型的方式来追踪变化。</li></ul> <p>2、 为了不污染全局<code>Array.prototype</code>，我们在<code>Observer</code>中只针对那些需要侦测变化的数组使用 <code>__proto__</code>来覆盖原型方法</p> <ul><li>但 <code>__proto__</code>在ES6之前并不是标准属性，不是所有浏览器都支持它。</li> <li>针对不支持<code>__proto__</code>属性的浏览器，我们直接循环拦截器，把拦截器中的方法直接设置到数组身上来拦截<code>Array.prototype</code>上的原生方法。</li></ul> <p>3、<code>Array</code>收集依赖的方式和<code>Object</code>一样，都是在<code>getter</code>中收集。</p> <ul><li>由于使用依赖的位置不同，数组要在拦截器中向依赖发消息</li> <li>所以依赖不能像<code>Object</code>那样保存在<code>defineReactive</code>中</li> <li>而是把依赖保存在了<code>Observer</code>实例上。</li></ul> <p>4、在<code>Observer</code>中，我们对每个侦测了变化的数据都标上印记<code>__ob__</code>，并把<code>this</code>（Observer实例）保存在 <code>__ob__</code>上。</p> <p>主要作用：</p> <ul><li>为了标记数据是否被侦测了变化（保证同一个数据只被侦测一次）</li> <li>可以很方便地通过数据取到<code>__ob__</code>，从而拿到<code>Observer</code>实例上保存的依赖。</li> <li>当拦截到数组发生变化时，向依赖发送通知。</li></ul> <p>5、除了侦测数组<strong>自身的变化</strong>外，<strong>数组中元素发生的变化</strong>也要侦测。</p> <ul><li>调用<code>observeArray</code>方法将数组中的每一个元素都转换成响应式的并侦测变化。</li></ul> <p>6、除了侦测已有数据外，当用户使用<code>push</code>等方法向数组中<strong>新增数据</strong>时，<strong>新增的数据也要进行变化侦测</strong>。</p> <ul><li>如果是<code>push、unshift和splice</code>方法</li></ul> <ul><li><ul><li>从参数中将新增数据提取出来</li> <li>然后使用<code>observeArray</code>对新增数据进行<strong>变化侦测</strong>。</li></ul></li></ul> <p>7、由于在ES6之前，<code>JavaScript</code>并没有提供元编程的能力，所以对于数组类型的数据，一些语法无法追踪到变化。</p> <ul><li>只能拦截原型上的方法</li> <li>无法拦截数组特有的语法</li> <li>例如使用<code>length</code>清空数组的操作就无法拦截。</li></ul></div></section> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev"><a href="/vueblog/part-02.html" class="prev">
+          《深入浅出Vue.js》Day02:如何变化侦测Object？
+        </a></span> <span class="next"><a href="/vuejs3.0/part-about.html">
+          《Vue.js设计与实现》前言：全书讲什么？
+        </a></span></p></div> <div class="comments-wrapper"><!----></div> <ul class="side-bar sub-sidebar-wrapper" style="width:12rem;" data-v-ac050c62><li class="level-2" data-v-ac050c62><a href="/vueblog/part-03.html#_12-1-获取新增元素" class="sidebar-link reco-side-_12-1-获取新增元素" data-v-ac050c62>12.1 获取新增元素</a></li><li class="level-2" data-v-ac050c62><a href="/vueblog/part-03.html#_12-2-使用observer侦测新增元素" class="sidebar-link reco-side-_12-2-使用observer侦测新增元素" data-v-ac050c62>12.2 使用Observer侦测新增元素</a></li></ul></main></div> <!----></div></div></div></div><div class="global-ui"><div class="back-to-ceiling" style="right:1rem;bottom:6rem;width:2.5rem;height:2.5rem;border-radius:.25rem;line-height:2.5rem;display:none;" data-v-c6073ba8 data-v-c6073ba8><svg t="1574745035067" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5404" class="icon" data-v-c6073ba8><path d="M526.60727968 10.90185116a27.675 27.675 0 0 0-29.21455937 0c-131.36607665 82.28402758-218.69155461 228.01873535-218.69155402 394.07834331a462.20625001 462.20625001 0 0 0 5.36959153 69.94390903c1.00431239 6.55289093-0.34802892 13.13561351-3.76865779 18.80351572-32.63518765 54.11355614-51.75690182 118.55860487-51.7569018 187.94566865a371.06718723 371.06718723 0 0 0 11.50484808 91.98906777c6.53300375 25.50556257 41.68394495 28.14064038 52.69160883 4.22606766 17.37162448-37.73630017 42.14135425-72.50938081 72.80769204-103.21549295 2.18761121 3.04276886 4.15646224 6.24463696 6.40373557 9.22774369a1871.4375 1871.4375 0 0 0 140.04691725 5.34970492 1866.36093723 1866.36093723 0 0 0 140.04691723-5.34970492c2.24727335-2.98310674 4.21612437-6.18497483 6.3937923-9.2178004 30.66633723 30.70611158 55.4360664 65.4791928 72.80769147 103.21549355 11.00766384 23.91457269 46.15860503 21.27949489 52.69160879-4.22606768a371.15156223 371.15156223 0 0 0 11.514792-91.99901164c0-69.36717486-19.13165746-133.82216804-51.75690182-187.92578088-3.42062944-5.66790279-4.76302748-12.26056868-3.76865837-18.80351632a462.20625001 462.20625001 0 0 0 5.36959269-69.943909c-0.00994388-166.08943902-87.32547796-311.81420293-218.6915546-394.09823051zM605.93803103 357.87693858a93.93749974 93.93749974 0 1 1-187.89594924 6.1e-7 93.93749974 93.93749974 0 0 1 187.89594924-6.1e-7z" p-id="5405" data-v-c6073ba8></path><path d="M429.50777625 765.63860547C429.50777625 803.39355007 466.44236686 1000.39046097 512.00932183 1000.39046097c45.56695499 0 82.4922232-197.00623328 82.5015456-234.7518555 0-37.75494459-36.9345906-68.35043303-82.4922232-68.34111062-45.57627738-0.00932239-82.52019037 30.59548842-82.51086798 68.34111062z" p-id="5406" data-v-c6073ba8></path></svg></div></div></div>
+    <script src="/assets/js/app.585318e1.js" defer></script><script src="/assets/js/3.db9065b5.js" defer></script><script src="/assets/js/1.382b7b04.js" defer></script><script src="/assets/js/25.cafc22d8.js" defer></script>
+  </body>
+</html>

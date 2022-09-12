@@ -1,7 +1,7 @@
 ---
-title: 《Vue.js设计与实现》day01:全书讲什么？
+title: 《Vue.js设计与实现》day02：第一章 权衡的艺术
 author: 阿源 Hecate
-date: '2022-04-14'
+date: '2022-04-24'
 ---
 
 # 一、前言
