@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>《Vue.js设计与实现》day02：第一章 权衡的艺术 | 阿源 Hecate的博客</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?d7384eea898f82136bb26f27fb75c1e8";
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+    <meta name="description" content="阿源 Hecate的博客 记录前端学习、日常生活、阅读、美食、运动等感想日记">
+    
+    <link rel="preload" href="/assets/css/0.styles.92648794.css" as="style"><link rel="preload" href="/assets/js/app.801581fb.js" as="script"><link rel="preload" href="/assets/js/3.db9065b5.js" as="script"><link rel="preload" href="/assets/js/1.382b7b04.js" as="script"><link rel="preload" href="/assets/js/15.c8a25392.js" as="script"><link rel="prefetch" href="/assets/js/10.27918747.js"><link rel="prefetch" href="/assets/js/11.cf9e6ae3.js"><link rel="prefetch" href="/assets/js/12.e7036d67.js"><link rel="prefetch" href="/assets/js/13.1b6d368e.js"><link rel="prefetch" href="/assets/js/14.1c7699ae.js"><link rel="prefetch" href="/assets/js/16.38149b44.js"><link rel="prefetch" href="/assets/js/17.31029e58.js"><link rel="prefetch" href="/assets/js/18.9b9ff472.js"><link rel="prefetch" href="/assets/js/4.1a72345b.js"><link rel="prefetch" href="/assets/js/5.6d99caa7.js"><link rel="prefetch" href="/assets/js/6.14cd16ee.js"><link rel="prefetch" href="/assets/js/7.a1fa8449.js"><link rel="prefetch" href="/assets/js/8.11230af2.js"><link rel="prefetch" href="/assets/js/9.aee25f0d.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.92648794.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container" data-v-5bb33761><div data-v-5bb33761><div class="password-shadow password-wrapper-out" style="display:none;" data-v-59e6cb88 data-v-5bb33761 data-v-5bb33761><h3 class="title" data-v-59e6cb88>阿源 Hecate的博客</h3> <p class="description" data-v-59e6cb88>阿源 Hecate的博客 记录前端学习、日常生活、阅读、美食、运动等感想日记</p> <label id="box" class="inputBox" data-v-59e6cb88><input type="password" value="" data-v-59e6cb88> <span data-v-59e6cb88>Konck! Knock!</span> <button data-v-59e6cb88>OK</button></label> <div class="footer" data-v-59e6cb88><span data-v-59e6cb88><i class="iconfont reco-theme" data-v-59e6cb88></i> <a target="blank" href="https://vuepress-theme-reco.recoluan.com" data-v-59e6cb88>vuePress-theme-reco</a></span> <span data-v-59e6cb88><i class="iconfont reco-copyright" data-v-59e6cb88></i> <a data-v-59e6cb88><!---->
+          
+        <!---->
+        2022
+      </a></span></div></div> <div class="hide" data-v-5bb33761><header class="navbar" data-v-5bb33761><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/assets/img/logo.png" alt="阿源 Hecate的博客" class="logo"> <span class="site-name">阿源 Hecate的博客</span></a> <div class="links"><div class="color-picker"><a class="color-button"><i class="iconfont reco-color"></i></a> <div class="color-picker-menu" style="display:none;"><div class="mode-options"><h4 class="title">Choose mode</h4> <ul class="color-mode-options"><li class="dark">dark</li><li class="auto active">auto</li><li class="light">light</li></ul></div></div></div> <div class="search-box"><i class="iconfont reco-search"></i> <input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link"><i class="undefined"></i>
+  首页
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="undefined"></i>
+      阿源 Hecate的博客
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://github.com/HecateET" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="undefined"></i>
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://juejin.cn/user/465848660675048/posts" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="undefined"></i>
+  掘金
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.xiaohongshu.com/user/profile/5e94f5de000000000100a3b1?xhsshare=CopyLink&amp;appuid=5e94f5de000000000100a3b1&amp;apptime=1644722473" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="undefined"></i>
+  美食日记｜小红书
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask" data-v-5bb33761></div> <aside class="sidebar" data-v-5bb33761><div class="personal-info-wrapper" data-v-1fad0c41 data-v-5bb33761><!----> <!----> <div class="num" data-v-1fad0c41><div data-v-1fad0c41><h3 data-v-1fad0c41>7</h3> <h6 data-v-1fad0c41>文章</h6></div> <div data-v-1fad0c41><h3 data-v-1fad0c41>0</h3> <h6 data-v-1fad0c41>标签</h6></div></div> <ul class="social-links" data-v-1fad0c41></ul> <hr data-v-1fad0c41></div> <nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link"><i class="undefined"></i>
+  首页
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="undefined"></i>
+      阿源 Hecate的博客
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://github.com/HecateET" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="undefined"></i>
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://juejin.cn/user/465848660675048/posts" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="undefined"></i>
+  掘金
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.xiaohongshu.com/user/profile/5e94f5de000000000100a3b1?xhsshare=CopyLink&amp;appuid=5e94f5de000000000100a3b1&amp;apptime=1644722473" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="undefined"></i>
+  美食日记｜小红书
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <!----></nav> <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><a href="/" class="sidebar-heading clickable router-link-active"><span>欢迎学习</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/" aria-current="page" class="sidebar-link">学前必读</a></li></ul></section></li><li><section class="sidebar-group depth-0"><a href="/handbook/ConditionalTypes" class="sidebar-heading clickable open"><span>Vue.js设计与实现</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/vuejs3.0/part-about.html" class="sidebar-link">前言：全书讲什么？</a></li><li><a href="/vuejs3.0/part-01.html" class="sidebar-link">第1章 权衡的艺术</a></li><li><a href="/vuejs3.0/part-02.html" aria-current="page" class="active sidebar-link">第2章 框架设计的核心要素</a></li><li><a href="/vuejs3.0/part-03.html" class="sidebar-link">第3章 Vue.js3的设计思路</a></li><li><a href="/vuejs3.0/part-04.html" class="sidebar-link">第4章 响应系统的作用与实现</a></li></ul></section></li><li><section class="sidebar-group depth-0"><a href="/handbook/ConditionalTypes" class="sidebar-heading clickable"><span>基础学习</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/handbook/ConditionalTypes.html" class="sidebar-link">条件类型</a></li><li><a href="/handbook/Generics.html" class="sidebar-link">泛型</a></li></ul></section></li></ul> </aside> <div class="password-shadow password-wrapper-in" style="display:none;" data-v-59e6cb88 data-v-5bb33761><h3 class="title" data-v-59e6cb88>《Vue.js设计与实现》day02：第一章 权衡的艺术</h3> <!----> <label id="box" class="inputBox" data-v-59e6cb88><input type="password" value="" data-v-59e6cb88> <span data-v-59e6cb88>Konck! Knock!</span> <button data-v-59e6cb88>OK</button></label> <div class="footer" data-v-59e6cb88><span data-v-59e6cb88><i class="iconfont reco-theme" data-v-59e6cb88></i> <a target="blank" href="https://vuepress-theme-reco.recoluan.com" data-v-59e6cb88>vuePress-theme-reco</a></span> <span data-v-59e6cb88><i class="iconfont reco-copyright" data-v-59e6cb88></i> <a data-v-59e6cb88><!---->
+          
+        <!---->
+        2022
+      </a></span></div></div> <div data-v-5bb33761><div data-v-5bb33761><main class="page"><section style="display:;"><div class="page-title"><h1 class="title">《Vue.js设计与实现》day02：第一章 权衡的艺术</h1> <div data-v-8a445198><i class="iconfont reco-account" data-v-8a445198><span data-v-8a445198>阿源 Hecate</span></i> <i class="iconfont reco-date" data-v-8a445198><span data-v-8a445198>2022/4/24</span></i> <!----> <!----></div></div> <div class="theme-reco-content content__default"><h1 id="一、前言"><a href="#一、前言" class="header-anchor">#</a> 一、前言</h1> <blockquote><p>day03 框架设计的核心要素包括有哪些呢？如果让我们自己去设计一个框架程序， 我们需要考虑的点有哪些？《Vue.js设计与实现》第2章 框架设计的核心要素这一章可以给你一些答案。</p></blockquote> <p>框架设计需要考虑的点例如：</p> <ul><li>我们的框架应该给用户提供哪些构建产物？</li> <li>产物的模块格式如何？</li> <li>当用户没有以预期的方式使用框架时，是否应该打印合适的警告信息从而提供更好的开发体验，让用户快速定位问题？</li> <li>开发版本的构建和生产版本的构建有何区别？</li> <li>热更新需要框架层面的支持，我们是否也应该考虑？</li> <li>当你的框架提供了多个功能，而用户只需要其中几个功能的时，用户能否选择关闭其他功能从而减少最终资源的打包体积？</li></ul> <p>以上问题，都是我们在设计框架的过程中应该考虑的。</p> <h1 id="二、本章内容"><a href="#二、本章内容" class="header-anchor">#</a> 二、本章内容</h1> <p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/35b4ab08e3614515a30452df00217b9d~tplv-k3u1fbpfcp-zoom-1.image" alt=""></p> <h2 id="_2-1-提升用户的开发体验"><a href="#_2-1-提升用户的开发体验" class="header-anchor">#</a> 2.1 提升用户的开发体验</h2> <h3 id="_1、提供友好的警告信息"><a href="#_1、提供友好的警告信息" class="header-anchor">#</a> 1、提供友好的警告信息</h3> <p>在框架设计和开发过程中，提供友好的警告信息至关重要。如果这一点都做得不好，那么很可能会经常收到用户的抱怨。始终提供友好的警告信息不仅能够帮助用户快速定位问题，节省用户的时间， 还能够让框架收获良好的口碑， 让用户认可框架的专业性。</p> <h3 id="_2、直观的输出内容"><a href="#_2、直观的输出内容" class="header-anchor">#</a> 2、直观的输出内容</h3> <p>举个例子，在Vue.js3中，当我们在控制台打印一个ref数据时：</p> <div class="language- extra-class"><pre class="language-text"><code>const count = ref(0)
+console.log(count)
+</code></pre></div><p>打开控制台查看输出，结果是：</p> <p>让输出的信息更友好， 可以自定义浏览器的<code>formatter</code> ,从而自定义输出形式。</p> <h2 id="_2-2-控制框架代码的体积"><a href="#_2-2-控制框架代码的体积" class="header-anchor">#</a> 2.2 控制框架代码的体积</h2> <p>框架的大小也是衡量框架的标准之一。在实现同样的功能的情况下， 自然是用代码越少越好， 这样体积就会越小，最后浏览器加载资源的时间也就越少。</p> <p>联想一下， 提供越完善的警告信息就意味着要编写更多的代码，这不是与控制代码体积相悖吗？那么想办法如何解决这个问题。</p> <p><code>Vue.js3</code> 源码，可以发现每一个<code>warn</code>函数的调用都会配合 <code>__DEV__</code>常量的检查，例如：</p> <div class="language- extra-class"><pre class="language-text"><code>if(__DEV__ &amp;&amp; !res){
+  warn(`Faild to mount app:mount target selector &quot;${container}&quot; returned null`)
+}
+</code></pre></div><p>在开发环境中， <code>__DEV__</code>为<code>true</code> ，上面的warn代码是一定会存在的；而当用于生产环境的资源时，会把<code>__DEV__</code>常量设置为 <code>false</code>,这时上面<code>warn</code>分支代码将永远不会执行。</p> <p>因为判断条件始终为假，这段永远不会执行的代码称为<code>dead code</code>,它不会出现在最终产物中， 在构建资源的时候就会被移除，因此在<code>vue.global.prod.js</code>中是不会存在这段代码的。</p> <p>以上就能做到， <strong>在开发环境中为用户提供友好的警告信息的同时，不会增加生产环境代码的体积。</strong></p> <h2 id="_2-3-框架要做到良好的tree-shaking"><a href="#_2-3-框架要做到良好的tree-shaking" class="header-anchor">#</a> 2.3 框架要做到良好的Tree-Shaking</h2> <p><strong>思考</strong>：Vue内建了很多组件,例如：<code>&lt;Transition&gt;</code>组件，如果我们的项目中根本就没有用到该组件， 那么它的代码需要包含在项目最终的构建资源中吗？</p> <p><strong>答案</strong>：“当然不需要”，</p> <p>那么如何做到以上功能点，那就要讲到<code>Tree-Shaking</code></p> <h3 id="_1、什么是tree-shaking"><a href="#_1、什么是tree-shaking" class="header-anchor">#</a> 1、什么是Tree-Shaking？</h3> <p>在前端领域，这个概念因<code>rollup.js</code>而普及。 简单的说，<code>Tree-Shaking</code> 指的就是消除那些永远不会被执行的代码，也就是排除<code>dead code</code>，现在无论是<code>rollup.js</code>还是<code>webpack</code>，都支持<code>Tree-Shaking</code>。</p> <h3 id="_2、如何实现tree-shaking"><a href="#_2、如何实现tree-shaking" class="header-anchor">#</a> 2、如何实现Tree-Shaking?</h3> <p>想要实现<code>Tree-Shaking</code>，必须要满足一个条件，即模块必须是<code>ESM</code>（ES Module），因为<code>Tree-Shaking</code>依赖<code>ESM</code>的静态结构。</p> <p>以<code>rollup.js</code>举例子看看<code>Tree-Shaking</code> 是如何工作的，其中目录结构为：</p> <div class="language- extra-class"><pre class="language-text"><code>｜—— demo
+｜	 —— package.json
+｜	 —— input.js
+｜	 —— utils.js
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>yarn add rollup -D
+
+#or npm install rollup -D
+</code></pre></div><p><code>input.js</code>和<code>utils.js</code>文件的内容；</p> <div class="language- extra-class"><pre class="language-text"><code>//input.js
+import {foo} from './utils.js'
+foo()
+
+//utils.js
+export function foo(obj){
+  obj&amp;&amp; obj.foo
+}
+
+export function bar(obj){
+  obj&amp;&amp; obj.bar
+}
+</code></pre></div><p>上述代码很简单，在<code>utils.js</code> 文件中定义并到处了两个函数， 分别是<code>foo</code>函数和<code>bar</code>函数，然后在<code>input.js</code>中倒入了<code>foo</code>函数并执行。注意，我们并没有倒入<code>bar</code>函数。</p> <div class="language- extra-class"><pre class="language-text"><code>npm rollup input.js -f esm -o bundle.js
+</code></pre></div><p>以<code>input.js</code>文件为入口， 输出<code>ESM</code>，输出的文件叫<code>bundle.js</code>。命令执行成功后，我们打开<code>bundle.js</code>来查看一下他的内容：</p> <div class="language- extra-class"><pre class="language-text"><code>//bundle.js
+function foo(obj){
+  obj&amp;&amp; obj.foo
+}
+
+foo();
+</code></pre></div><p>可以看到，其中并不包含<code>bar</code>函数， 这说明<code>Tree-Shaking</code>起作用了。 由于我们并没有使用<code>bar</code>函数，因此它作为<code>dead code</code>被删除了。</p> <p>但是仔细观察会发现， <code>foo</code>函数的执行也没有什么意义，仅仅是读取了对象的值，所以它的执行似乎没有什么必要。既然这段代码删了也不会对我们的应用程序产生影响，那么为什么<code>rollup.js</code>不把这段代码也作为<code>dead code</code>移除呢？</p> <h3 id="_3、tree-shaking中的第二个关键点-副作用"><a href="#_3、tree-shaking中的第二个关键点-副作用" class="header-anchor">#</a> 3、Tree- Shaking中的第二个关键点-副作用</h3> <p>如果一个函数调用会产生副作用， 那么就不能将其移出。</p> <p>什么是副作用？简单地说，副作用就是，当调用函数的时候会对外部产生影响，例如修改了全局变量。</p> <p>解释，也许你会说上面的代码明显是读取对象的值，怎么会产生副作用呢？其实也是有可能的，试想一下：</p> <ul><li>如果<code>obj</code>对象是一个通过<code>Proxy</code>创建的代理对象。</li> <li>那么当我们读取对象属性时，就会触发代理对象的<code>get</code>夹子（<code>trap</code>），在<code>get</code>夹子中是可能产生副作用的。</li> <li>例如：我们在<code>get</code>夹子中修改了某个全局变了。</li></ul> <p>至于到底会不会产生副作用，只有代码真正运行的时候才能知道，<code>JavaScript</code>本身是动态语言，因此想要静态地分析哪些代码是<code>dead code</code>很有安度，上面只是举了一个简单的例子。</p> <h3 id="_4、-pure-注释代码"><a href="#_4、-pure-注释代码" class="header-anchor">#</a> 4、<code>/*#__PURE__*/</code> 注释代码</h3> <p>因为静态地分析<code>JavaScript</code>代码很困难， 所以像<code>rollup.js</code>这类工具都会提供一个机制，让我们明确地告诉<code>roullup.js</code>:&quot;放心吧，这段代码不会产生副作用，你可以移除它。&quot;，具体如何做？</p> <div class="language- extra-class"><pre class="language-text"><code>import {foo} from './utils'
+/*#__PURE__*/ foo()
+</code></pre></div><p>注释代码<code>/*#__PURE__*/</code>，作用就是告诉<code>rollup.js</code>，对于<code>foo</code>函数地调用不会产生副作用，你可以放心地对其进行<code>Tree-Shaking</code>,此时再次执行构建命令并查看<code>bundle.js</code>文件，就会发现它的内容是空的，这就说明<code>Tree-Shaking</code>生效了。</p> <p>在编写框架的时候需要合理的使用<code>/*#__PURE__*/</code>注释。如果你去搜索<code>Vue.js3</code> 的源码，会发现它大量使用了该注释，例如：</p> <div class="language- extra-class"><pre class="language-text"><code>export const isHTMLTag = /*#__PURE__*/ makeMap(HTML_TAGS)
+</code></pre></div><p>这对编写代码是否会造成很大的心智负担？</p> <ul><li>不会，因为通常生产副作用的代码都是模块内函数的顶级调用。</li> <li>对于顶级调用来说，是可能产生副作用的；</li> <li>但对于函数内调用来说， 只要函数<code>bar</code>没有被调用， 那么<code>foo</code>函数对调用自然不会产生副作用。</li></ul> <div class="language- extra-class"><pre class="language-text"><code>foo() //顶级调用
+
+function bar(){
+  foo()//函数内调用
+  
+}
+</code></pre></div><p>因此在<code>Vue.js3</code> 的源码中， 基本都是在一些顶级调用的函数上使用<code>/*#__PURE__*/</code>注释。</p> <p>它可以应用在任何语句上。 该注释可以被<code>rollup.js</code>和<code>webpack</code>以及压缩工具（如<code>terser</code>）识别。</p> <h2 id="_2-4-框架应该输出怎样的构建产物"><a href="#_2-4-框架应该输出怎样的构建产物" class="header-anchor">#</a> 2.4 框架应该输出怎样的构建产物</h2> <p>上文提到Vue.js会为开发环境和生产环境输出不同的包，例如:</p> <ul><li><code>vue.global.js</code>用于开发环境，它包含必要的警告信息</li> <li><code>vue.global.prod.js</code>用于生产环境，不包含警告信息。</li></ul> <p>实际上，<code>Vue.js</code>的构建产物处理有环境上的区分之外， 还会根据使用场景的不同而输出其他形式的产物。</p> <p>我们将讨论这些产物的用途以及在构建阶段如何输出这些产物。</p> <h3 id="_1、需求背景一-在html页面中"><a href="#_1、需求背景一-在html页面中" class="header-anchor">#</a> 1、需求背景一：在HTML页面中</h3> <p>用户可以直接在HTML页面中使用<code>&lt;script&gt;</code>标签引入框架并使用</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;body&gt;
+  &lt;script src=&quot;/path/to/vue.js&quot;&gt;&lt;/script&gt;  
+  &lt;script&gt;
+    const {createApp} = Vue
+    //...
+  &lt;/script&gt;  
+&lt;/body&gt;
+</code></pre></div><p>为了实现这个需求， 我们需要输出一种叫做IIFE格式的资源。<code>IIFE</code>的全称是<code>Immediately Invoked Function Expression</code>，即“立即调用的函数表达式”，易于用<code>JavaScript</code>来表达：</p> <div class="language- extra-class"><pre class="language-text"><code>(function(){
+  //...
+})()
+</code></pre></div><p>如上所示，这是一个立即执行的函数表达式。实际上，<code>vue.global.js</code>的文件就是<code>IIFE</code>形式的资源，它的代码结构如下所示：</p> <div class="language- extra-class"><pre class="language-text"><code>var Vue = (function(exports){
+  //...
+  exports.createApp = createApp;
+  //...
+  return exports
+}({}))
+</code></pre></div><p>这样当我们使用<code>&lt;script&gt;</code> 标签直接引入<code>vue.global.js</code>文件后， 全局变量<code>Vue</code>就是可用的了。</p> <p>在<code>rullup.js</code>中，可以通过配置<code>format：'iife'</code>来输出这种形式的资源：</p> <div class="language- extra-class"><pre class="language-text"><code>const config = {
+  input:'input.js',
+  output:{
+    file:'output.js',
+    format:'iife' //指定模块形式
+  }
+}
+
+export default config
+</code></pre></div><h3 id="_2、需求背景二-直接引入esm格式的资源"><a href="#_2、需求背景二-直接引入esm格式的资源" class="header-anchor">#</a> 2、需求背景二：直接引入ESM格式的资源</h3> <p>随着技术的发展和浏览器的支持，现在主流浏览器对原生ESM的支持都很不错， 所以用户除了能够使用<code>&lt;script&gt;</code>标签引用<code>IIFE</code>格式的资源外，还可以直接引入<code>ESM</code>格式的资源。</p> <p>例如：<code>Vue.js3</code>还会输出<code>vue.esm.browser.js</code>文件，用户可以直接调用<code>&lt;script type=&quot;module&quot;&gt;</code>标签引入：</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;script type=&quot;module&quot; src=&quot;/path/to/vue.esm-browser.js&quot;&gt;&lt;/script&gt;
+</code></pre></div><p>为了输出<code>ESM</code>格式的资源，<code>rollup.js</code>的输出格式需要配置为：<code>format:'esm'</code>。</p> <p>为什么<code>vue.esm-browser.js</code>文件中会有<code>-browser</code>字样？其实对于<code>ESM</code>格式的资源来说， ·Vue.js·还会输出一个<code>vue.esm-bundler.js</code>文件。</p> <p>为什么其中的<code>-browser</code>变成了<code>-bundler</code>呢？</p> <ul><li>无论<code>rollup.js</code>还是<code>webpack</code>，在寻找资源时，如果<code>package.json</code>中存在<code>module</code>字段， 那么会优先使用<code>module</code>字段指向的资源来代替<code>main</code>字段指向的资源。</li></ul> <div class="language- extra-class"><pre class="language-text"><code>{
+  &quot;main&quot;:&quot;index.js&quot;,
+  &quot;module&quot;:dist/vue.runtime.esm-bundler.js&quot;
+}
+</code></pre></div><p>其中<code>module</code>字段指向的是<code>vue.runtime.esm-bundler.js</code>文件：</p> <ul><li>如果项目使用<code>webpack</code>构建的，那么你是用的<code>Vue.js</code>资源就是<code>vue.runtime.esm-bundler.js</code></li> <li>带有<code>-bundler</code>字样的<code>ESM</code>资源是给<code>rollup.js</code>或<code>webpack</code>等打包工具使用等。</li> <li>带有<code>-browser</code>字样的<code>ESM</code>资源是给<code>&lt;script type=&quot;module&quot;</code>使用的。</li></ul> <p><code>-bundler</code> <strong>和</strong><code>-browser</code><strong>两者有何区别？看</strong><code>__DEV__</code>常量。</p> <ul><li>当构建用于<code>&lt;script&gt;</code> 标签的<code>ESM</code>资源时</li></ul> <ul><li><ul><li>开发环境：<code>__DEV__</code>会被设置为<code>true</code></li> <li>生产环境：<code>__DEV__</code>会被设置为<code>false</code>，从而被<code>Tree-Shaking</code>移除</li></ul></li></ul> <ul><li>当构建提供给打包工具的<code>ESM</code>格式的资源时</li></ul> <ul><li><ul><li>不能直接把<code>__DEV__</code>设置为<code>true</code>或<code>false</code></li> <li>而是要使用<code>(process.env.NODE_ENV !== 'production')</code> 替换<code>__DEV__</code>常量。</li></ul></li></ul> <div class="language- extra-class"><pre class="language-text"><code>if(__DEV__){
+  warn(`useCssModule() is not supported in the global build`)
+}
+</code></pre></div><p>带有<code>-bundler</code>字样的资源中会变成：</p> <div class="language- extra-class"><pre class="language-text"><code>if((process.env.NODE_ENV !=='production')){
+   warn(`useCssModule() is not supported in the global build`)
+}
+</code></pre></div><p>这样做的好处是：用户可以通过<code>webpack</code>配置自行决定构建资源的目标环境，但是最终效果其实一样，这段代码也只会出现在开发环境中。</p> <h3 id="_3、需求背景三-用于服务端渲染"><a href="#_3、需求背景三-用于服务端渲染" class="header-anchor">#</a> 3、需求背景三：用于服务端渲染</h3> <p>希望用户可以在<code>Node.js</code>中通过<code>require</code>语句引用资源，例如：</p> <div class="language- extra-class"><pre class="language-text"><code>const Vue = require('vue')
+</code></pre></div><p>当进行服务端渲染时，<code>Vue.js</code>的代码是在<code>Node.js</code>环境中运行的， 而非浏览器环境。在<code>Node.js</code>环境中，资源的模块格式应该是<code>CommonJS</code>,简称<code>cjs</code></p> <p>为了能输出<code>cjs</code> 模块的资源，我们可以通过修改<code>rollup.config.js</code>的配置<code>format:'cjs'</code>来实现：</p> <div class="language- extra-class"><pre class="language-text"><code>const config = {
+  input:'input.js',
+  output:{
+    file:'output.js',
+    format:'cjs'//指定模块形式
+  }
+}
+
+export default config
+</code></pre></div><h2 id="_2-5-特性开关"><a href="#_2-5-特性开关" class="header-anchor">#</a> 2.5 特性开关</h2> <h3 id="_1、什么是特性开关"><a href="#_1、什么是特性开关" class="header-anchor">#</a> 1、什么是特性开关？</h3> <p>在设计框架时，框架会给用户提供诸多特性（或功能），例如我们提供A、B、C三个特性给用户，同事还提供了a、b、c三个对应的特性开关，用户可以通过设置a、b、c为true或者false来代表开启或关闭对应的特性，可以带来很多益处：</p> <ul><li>对于用户关闭的特性， 可以利用<code>Tree-Shaking</code>机制让其不包含在最终的资源中。</li> <li>为框架设计带来了灵活性，可以通过特性开关任意为框架添加新的特性，而不用担心资源体积变大。</li> <li>当升级框架时，可以通过特性开关来支持遗留<code>API</code>，这样新用户可以选择不使用遗留<code>API</code>，从而使最终打包资源体积最小化</li></ul> <h3 id="_2、如何实现特性开关"><a href="#_2、如何实现特性开关" class="header-anchor">#</a> 2、如何实现特性开关？</h3> <p>原理和上文提到的<code>__DEV__</code>常量一样， 本质上是利用<code>rollup.js</code>的预定义常量插件来实现。</p> <div class="language- extra-class"><pre class="language-text"><code>{
+  __FEATURE_OPTIONS_API__:isBundlerESBuild ? `__VUE_OPTIONS_API__`：true
+}
+</code></pre></div><p><code>__VUE_OPTIONS_API__</code> 类似于<code>__DEV__</code>。在<code>Vue.js3</code>源码中搜索，可以找到很多类似于如下代码的判断分支：</p> <div class="language- extra-class"><pre class="language-text"><code>if(__FEATURE_OPTIONS_API__){
+  currentInstance = instance
+  pauseTracking()
+  applyOptions(instance,Component)
+  resetTracking()
+  currentInstance = null
+}
+</code></pre></div><p>当<code>Vue.js</code>构建资源时，如果构建的资源是供打包工具使用的（即带有<code>-bundler</code>字样的资源），那么上面 的代码在资源中会变成：</p> <div class="language- extra-class"><pre class="language-text"><code>if(__VUE_OPTIONS_API__){ //注意
+  currentInstance = instance
+  pauseTracking()
+  applyOptions(instance,Component)
+  resetTracking()
+  currentInstance = null
+}
+</code></pre></div><p>其中<code>__VUE_OPTIONS_API__</code> 是一个特性开关， 用户可以通过设置<code>__VUE_OPTIONS_API__</code> 预定义常量的值来控制是否要包含这段代码。</p> <p>通常用户可以使用<code>webpack.DefinePlugin</code>插件来实现：</p> <div class="language- extra-class"><pre class="language-text"><code>new webpack.DefinePlugin({
+  __VUE_OPTIONS_API__:JSON.stringify(true)// 开启特性
+})
+</code></pre></div><p><code>__VUE_OPTIONS_API__</code><strong>开关有什么作用？</strong></p> <ul><li>在<code>Vue.js2</code>中，我们编写的组件叫做组件选项<code>API</code></li></ul> <div class="language- extra-class"><pre class="language-text"><code>export default{
+  data(){}, //data选项
+  computed:{}, //computed选项
+  //其他选项
+}
+</code></pre></div><ul><li>在<code>Vue.js3</code>中，推荐使用<code>Composition API</code>来编写代码</li></ul> <div class="language- extra-class"><pre class="language-text"><code>export default{
+    setup(){
+      const count = ref(0)
+      const doubleCount = computed(()=&gt; count.value *2) //相当于Vue.js2中的computed选项
+    }
+}
+</code></pre></div><p>但是为了兼容<code>Vue.js2</code>,在<code>Vue.js3</code>中仍然可以使用选项<code>API</code>的方式编写代码。</p> <p>如果明确指导自己不会使用选项<code>API</code>，用户就可以使用<code>__VUE_OPTIONS_API__</code> 开关来关闭该特性，这样在打包的时候<code>Vue.js</code>的这个部分代码就不会包含在最终的资源中，从而减小资源体积。</p> <h2 id="_2-6-错误处理"><a href="#_2-6-错误处理" class="header-anchor">#</a> 2.6 错误处理</h2> <p>错误处理是框架开发过程中非常重要的环节。框架错误处理机制的好坏直接决定了用户应用程序的健壮性，还决定了用户开发时处理错误的心智负担。</p> <p>为了让大家更加直观地感受错误处理的重要性，我们从一个小例子说起。假设我们开发了一个工具模块，代码如下：</p> <div class="language- extra-class"><pre class="language-text"><code>export default {
+  foo(fn) {
+    fn &amp;&amp; fn()
+  }
+}
+</code></pre></div><p>该模块导出一个对象，其中<code>foo</code>属性是一个两数，接收一个回调函数作为参数，调用<code>foo</code>函数时会执行该回调两数，在用户侧使用时：</p> <div class="language- extra-class"><pre class="language-text"><code>import utils from 'utils.js'
+utils. foo(() =&gt; {
+    //...
+})
+</code></pre></div><p>大家思考一下，如果用户提供的回调两数在执行的时候出错了，怎么办？此时有两个办法，第一个办法是让用户自行处理，这需要用户自己执行<code>try ... catch</code>:</p> <div class="language- extra-class"><pre class="language-text"><code>import utils from 'utils.js'
+
+utils.foo(()=&gt;{
+  try{
+    //...
+  }catch(e){
+    //...
+  }
+})
+</code></pre></div><p>但是这会增加用户的负担。试想一下，如果<code>utils.js</code> 不是仅仅提供了一个<code>foo</code>两数：而是提供了几十上百给类似的函数，那么用户在使用的时候就需要逐一添加错误处理程序。</p> <p>第二个办法是我们代替用户统一处理错误，如以下代码所示：</p> <div class="language- extra-class"><pre class="language-text"><code>export default {
+  foo(fn) {
+    try {
+      fn &amp;&amp; fn()
+    }catch(e) {/* .. */}
+  },
+  bar(fn) {
+    try {
+      fn &amp;&amp; fn()
+    }catch(e) {/* .. */}
+  },
+}
+</code></pre></div><p>在每个函数内都增加<code>try…catch</code>代码块，实际上，我们可以进步将错误处理程序封装为一个函数，假设叫它<code>callWithErrorHandling</code>:</p> <div class="language- extra-class"><pre class="language-text"><code>export default {
+  foo(fn) {
+    callWithErrorHanding(fn)
+  },
+  bar(fn) {
+    callWithErrorHanding(fn)
+  },
+}
+
+function callWithErrorHanding(fn){
+    try {
+      fn &amp;&amp; fn()
+    }catch(e) {
+      console.log(e)
+    }
+}
+</code></pre></div><p>可以看到，代码变得简洁多了了。但简洁不是目的，这么做真正的好处是，我们能为用户提供统一的错误处理接口，如下所示：</p> <div class="language- extra-class"><pre class="language-text"><code>let handleError = null
+export default{
+  foo(fn) {
+    callwithErrorHandling(fn)
+  },
+  //用户可以调用该函数注册统一的錯误处理函数
+  registerErrorHandler(fn){
+    handleError = fn
+  }
+},
+  
+function callwithErrorHandling(fn){
+  try {
+    fn &amp;&amp; fn()
+  } catch (e) {
+    // 将捕获到的错误传递给用户的错误处理程序
+    handleError(e)
+  }
+}
+</code></pre></div><p>我们提供了 <code>registerErrorHandler</code> 函数数，用户可以使用它注册错误处理程序，然后在<code>callMithErrorlHandling</code> 函数肉部捕获错误后，把错误传递给用户注册的错误处理程序。</p> <p>这样用户侧的代码就会非常简洁且健壮：</p> <div class="language- extra-class"><pre class="language-text"><code>import utils from 'utils.is'
+  // 注册错误处理程序
+utils.registerErrorHandler((e)=&gt;{
+  console. log(e)
+})
+utils.foo(() =&gt; {/*...*/})
+utils. bar(() =&gt; {/*...*/})
+</code></pre></div><p>这时错误处理的能力完全由用户控制，用户既可以选择忽略错误，也可以调用上报程序将错误上报给监控系统。</p> <p>实际上，这就是<code>Vue.is</code>错误处理的原理，你可以在源码中搜素到 <code>calWWithErrorHandling</code> 函数。另外，在<code>Vuejs</code>中，我们也可以注册统一的错误处理函数：</p> <div class="language- extra-class"><pre class="language-text"><code>import App from 'App.vue'
+const app = createApp (App)
+app.config.errorHandter = ()=&gt;{
+  //错误处理程序
+}
+</code></pre></div><h2 id="_2-7-良好的typescript类型支持"><a href="#_2-7-良好的typescript类型支持" class="header-anchor">#</a> 2.7 良好的TypeScript类型支持</h2> <p>TypeScript是由微软开源的编程语言，简称TS它是 JavaSeript的超集，能够为 JavaScript提供类型支持。现在越来越多的开发者和团队在项目中使用TS。</p> <p>使用TS的好处有很生，如代码即文档、编辑器自动提示、一定程度上能够避免低级 bug、代码的可维护性更强等。因此对 TS 类型的支持是否完善也成为评价一个框架的重要指标。</p> <p>如何衡量一个框架对TS类型支持水平？ 这里有一个常见的误区， 很多读者以为只要是使用TS编写框架， <strong>就等价于对TS类型支持友好，其实这是两件完全不同的事。</strong></p> <hr> <p><strong>举例子：</strong></p> <div class="language- extra-class"><pre class="language-text"><code>function fooo(val:any){
+  return val
+}
+</code></pre></div><p>这个函数很简单，它接收参数<code>val</code>并且该参数可以是任意类型（any)，该两数直接将参数作为返回值，这说明返回值的类型是由参数决定的，如果参数是<code>number</code> 类型，那么返回值也是<code>number</code>类型。</p> <p>然后我们尝试使用一下这个函数数，如图所示:</p> <p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a2aba713969e4f59a21c483b8729a37f~tplv-k3u1fbpfcp-zoom-1.image" alt=""></p> <p>在调用 <code>fooo</code> 两数时，我们传递了一个字符串类型的参数，<code>&quot;str&quot;</code>，按照之前的分析，得到的结果<code>reso</code> 的类型应该也是字符串类型，然而当我们把鼠标指针悬浮到<code>reso</code> 常量上时，可以看到其类型是<code>any</code>，这并不是我们想要的结果。</p> <p>为了达到理想状态，我们只需要对 <code>fooo</code> 两数做简单的修改即可：</p> <div class="language- extra-class"><pre class="language-text"><code>function fooo&lt;T extends any&gt;(val:T):T{
+  return val
+}
+</code></pre></div><p>再来看现在的表现，如图所示：</p> <p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2272d26ba4134367846d34a8c40c83af~tplv-k3u1fbpfcp-zoom-1.image" alt=""></p> <p>可以看到，<code>reso</code> 的类型是字符字面量<code>&quot;str&quot;</code>而不是 <code>any</code> 了，这说明我们的代码生效了。</p> <p>通过这个简单的例子我们认识到，使用<code>TS编写代码</code>与对<code>TS 类型支持友好</code>是两件事。</p> <p>在编写大型框架时，想要做到完善的<code>TS</code>类型支持很不容易，大家可以查看 <code>Vuejs</code>源码中的 <code>runtime-core/src/apiDefineComponent.ts</code>文件，整个文件里真正会在浏览器中运行的代码其实只有3行，但是</p> <p>全部的代码接近200行，其实这些代码都是在为类型支持服务。由此可见，框架想要做到完善的类型支持，需要付出相当大的努力。</p> <p>除了要花大力气做类型推导，从而做到更好的类型支持外，还要考虑对 TSX 的支持，后续章节会详细讨论这部分内容。</p> <h1 id="三、总结"><a href="#三、总结" class="header-anchor">#</a> 三、总结</h1> <h2 id="_1、框架设计中关于开发体验"><a href="#_1、框架设计中关于开发体验" class="header-anchor">#</a> 1、框架设计中关于开发体验</h2> <p>开发体验是衡量一个框架的重要指标之一。提供友好的警告信息至关重要，这有助于开发者快速定位问题。</p> <p>因为大多情况下“框架”要比开发者更清楚问题出在哪里，因此在框架层面抛出有意义的警告信息是非常有必要。</p> <h2 id="_2、解决框架体积过大tree-shaking机制"><a href="#_2、解决框架体积过大tree-shaking机制" class="header-anchor">#</a> 2、解决框架体积过大Tree-Shaking机制</h2> <p>提供的警告信息越详细， 就意味着框架体积越大。因此，为了框架体积不受警告信息的影响，我们需要利用Tree-Shaking机制。来配合构建工具预定义常量的能力。</p> <p>例如：定义 <code>__DEV__</code>常量，从而实现仅在开发环境中打印警告信息，而生产环境中则不包含这些用于提升开发体验的代码，从而实现线上代码体积的可控性。</p> <p><code>Tree-Shaking</code>是一种排除 <code>dead code</code>的机制，框架中会内建多种能力， 例如：<code>Vue.js</code> 内建的组件等。</p> <ul><li>对于用户可能用不到的能力， 我们可以利用<code>Tree-Shaking</code> 机制使最终打包的代码体积最小化。</li> <li><code>Tree-Shaking</code>本身基于<code>ESM</code>,并且<code>JavaScript</code>是一门动态语言，通过纯静态分析的手段进行<code>Tree-Shaking</code>难度较大， 因此大部分工具能够识别<code>/*#__PURE__*/</code>注释</li> <li>在编写框架代码时，我们可以利用<code>/*#__PURE__*/</code> 来辅助构建工具进行<code>Tree-Shaking</code></li></ul> <h2 id="_3、框架输出产物"><a href="#_3、框架输出产物" class="header-anchor">#</a> 3、框架输出产物</h2> <p>不同类型的产物是为了满足不同的需求。</p> <ul><li><p>为了让用户能够通过<code>&lt;script&gt;</code>标签直接引用并使用， 我们需要输出<code>IIFE</code>格式的资源，即立即调用的函数表达式。</p></li> <li><p>为了让用户能够通过<code>&lt;script type=&quot;module&quot;&gt;</code> 引用并使用，我们需要输出<code>ESM</code>格式的资源。</p> <ul><li><p>ESM格式的资源有两种：</p> <ul><li>用于浏览器的<code>esm-browers.js</code></li> <li>用于打包工具的<code>esm-bundler.js</code></li></ul></li></ul></li> <li><p>两者资源区别在于对预定义常量<code>__DEV__</code> 的处理：</p> <ul><li>用于浏览器的直接将 <code>__DEV__</code> 常量替换为字面量<code>true</code> 或<code>false</code></li> <li>用于打包工具的则将<code>__DEV__</code> 替换为<code>process.env.NODE_ENV !== 'production'</code>语句</li></ul></li></ul> <h2 id="_4、框架会提供多种能力或功能"><a href="#_4、框架会提供多种能力或功能" class="header-anchor">#</a> 4、框架会提供多种能力或功能</h2> <p>有时出于灵活性和兼容性的考虑，对于同样的任务， 框架提供了两种解决方案。</p> <ul><li><code>Vue.js</code> 中的选项对象式<code>API</code>和组合式<code>API</code> 都能用来完成页面的开发， 两者虽然不互斥，但从框架设计的角度来看， 这完全是基于兼容性的考虑。</li> <li>有时用户明确知道自己仅会使用组合式<code>API</code>,而不会使用选项对象式<code>API</code>,这时用户可以通过特性开关关闭对应的特性，这样在打包的时候， 用于实现关闭功能的代码将会被<code>Tree-Shaking</code>机制排除。</li></ul> <h2 id="_5、程序的健壮性"><a href="#_5、程序的健壮性" class="header-anchor">#</a> 5、程序的健壮性</h2> <p>框架的错误处理做得好坏直接决定了用户应用程序的健壮性，同时还决定了用户开发应用时处理错误的心智负担。</p> <p>框架需要为用户提供统一的错误处理接口，这样用户可以通过注册自定义的错误处理函数来处理全部的框架异常。</p> <h2 id="_6、认知误区"><a href="#_6、认知误区" class="header-anchor">#</a> 6、认知误区</h2> <p>“使用TS编写框架和框架对TS类型支持友好是两件完全不同的事。”</p> <p>有时候为了让框架提供更加友好的类型支持， 甚至要花费比实现框架功能本身更多的时间和精力。</p></div></section> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev"><a href="/vuejs3.0/part-01.html" class="prev">
+          第1章 权衡的艺术
+        </a></span> <span class="next"><a href="/vuejs3.0/part-03.html">
+          第3章 Vue.js3的设计思路
+        </a></span></p></div> <div class="comments-wrapper"><!----></div> <ul class="side-bar sub-sidebar-wrapper" style="width:12rem;" data-v-ac050c62><li class="level-2" data-v-ac050c62><a href="/vuejs3.0/part-02.html#_2-1-提升用户的开发体验" class="sidebar-link reco-side-_2-1-提升用户的开发体验" data-v-ac050c62>2.1 提升用户的开发体验</a></li><li class="level-3" data-v-ac050c62><a href="/vuejs3.0/part-02.html#_1、提供友好的警告信息" class="sidebar-link reco-side-_1、提供友好的警告信息" data-v-ac050c62>1、提供友好的警告信息</a></li><li class="level-3" data-v-ac050c62><a href="/vuejs3.0/part-02.html#_2、直观的输出内容" class="sidebar-link reco-side-_2、直观的输出内容" data-v-ac050c62>2、直观的输出内容</a></li><li class="level-2" data-v-ac050c62><a href="/vuejs3.0/part-02.html#_2-2-控制框架代码的体积" class="sidebar-link reco-side-_2-2-控制框架代码的体积" data-v-ac050c62>2.2 控制框架代码的体积</a></li><li class="level-2" data-v-ac050c62><a href="/vuejs3.0/part-02.html#_2-3-框架要做到良好的tree-shaking" class="sidebar-link reco-side-_2-3-框架要做到良好的tree-shaking" data-v-ac050c62>2.3 框架要做到良好的Tree-Shaking</a></li><li class="level-3" data-v-ac050c62><a href="/vuejs3.0/part-02.html#_1、什么是tree-shaking" class="sidebar-link reco-side-_1、什么是tree-shaking" data-v-ac050c62>1、什么是Tree-Shaking？</a></li><li class="level-3" data-v-ac050c62><a href="/vuejs3.0/part-02.html#_2、如何实现tree-shaking" class="sidebar-link reco-side-_2、如何实现tree-shaking" data-v-ac050c62>2、如何实现Tree-Shaking?</a></li><li class="level-3" data-v-ac050c62><a href="/vuejs3.0/part-02.html#_3、tree-shaking中的第二个关键点-副作用" class="sidebar-link reco-side-_3、tree-shaking中的第二个关键点-副作用" data-v-ac050c62>3、Tree- Shaking中的第二个关键点-副作用</a></li><li class="level-3" data-v-ac050c62><a href="/vuejs3.0/part-02.html#_4、-pure-注释代码" class="sidebar-link reco-side-_4、-pure-注释代码" data-v-ac050c62>4、/*#__PURE__*/ 注释代码</a></li><li class="level-2" data-v-ac050c62><a href="/vuejs3.0/part-02.html#_2-4-框架应该输出怎样的构建产物" class="sidebar-link reco-side-_2-4-框架应该输出怎样的构建产物" data-v-ac050c62>2.4 框架应该输出怎样的构建产物</a></li><li class="level-3" data-v-ac050c62><a href="/vuejs3.0/part-02.html#_1、需求背景一-在html页面中" class="sidebar-link reco-side-_1、需求背景一-在html页面中" data-v-ac050c62>1、需求背景一：在HTML页面中</a></li><li class="level-3" data-v-ac050c62><a href="/vuejs3.0/part-02.html#_2、需求背景二-直接引入esm格式的资源" class="sidebar-link reco-side-_2、需求背景二-直接引入esm格式的资源" data-v-ac050c62>2、需求背景二：直接引入ESM格式的资源</a></li><li class="level-3" data-v-ac050c62><a href="/vuejs3.0/part-02.html#_3、需求背景三-用于服务端渲染" class="sidebar-link reco-side-_3、需求背景三-用于服务端渲染" data-v-ac050c62>3、需求背景三：用于服务端渲染</a></li><li class="level-2" data-v-ac050c62><a href="/vuejs3.0/part-02.html#_2-5-特性开关" class="sidebar-link reco-side-_2-5-特性开关" data-v-ac050c62>2.5 特性开关</a></li><li class="level-3" data-v-ac050c62><a href="/vuejs3.0/part-02.html#_1、什么是特性开关" class="sidebar-link reco-side-_1、什么是特性开关" data-v-ac050c62>1、什么是特性开关？</a></li><li class="level-3" data-v-ac050c62><a href="/vuejs3.0/part-02.html#_2、如何实现特性开关" class="sidebar-link reco-side-_2、如何实现特性开关" data-v-ac050c62>2、如何实现特性开关？</a></li><li class="level-2" data-v-ac050c62><a href="/vuejs3.0/part-02.html#_2-6-错误处理" class="sidebar-link reco-side-_2-6-错误处理" data-v-ac050c62>2.6 错误处理</a></li><li class="level-2" data-v-ac050c62><a href="/vuejs3.0/part-02.html#_2-7-良好的typescript类型支持" class="sidebar-link reco-side-_2-7-良好的typescript类型支持" data-v-ac050c62>2.7 良好的TypeScript类型支持</a></li><li class="level-2" data-v-ac050c62><a href="/vuejs3.0/part-02.html#_1、框架设计中关于开发体验" class="sidebar-link reco-side-_1、框架设计中关于开发体验" data-v-ac050c62>1、框架设计中关于开发体验</a></li><li class="level-2" data-v-ac050c62><a href="/vuejs3.0/part-02.html#_2、解决框架体积过大tree-shaking机制" class="sidebar-link reco-side-_2、解决框架体积过大tree-shaking机制" data-v-ac050c62>2、解决框架体积过大Tree-Shaking机制</a></li><li class="level-2" data-v-ac050c62><a href="/vuejs3.0/part-02.html#_3、框架输出产物" class="sidebar-link reco-side-_3、框架输出产物" data-v-ac050c62>3、框架输出产物</a></li><li class="level-2" data-v-ac050c62><a href="/vuejs3.0/part-02.html#_4、框架会提供多种能力或功能" class="sidebar-link reco-side-_4、框架会提供多种能力或功能" data-v-ac050c62>4、框架会提供多种能力或功能</a></li><li class="level-2" data-v-ac050c62><a href="/vuejs3.0/part-02.html#_5、程序的健壮性" class="sidebar-link reco-side-_5、程序的健壮性" data-v-ac050c62>5、程序的健壮性</a></li><li class="level-2" data-v-ac050c62><a href="/vuejs3.0/part-02.html#_6、认知误区" class="sidebar-link reco-side-_6、认知误区" data-v-ac050c62>6、认知误区</a></li></ul></main></div> <!----></div></div></div></div><div class="global-ui"><div class="back-to-ceiling" style="right:1rem;bottom:6rem;width:2.5rem;height:2.5rem;border-radius:.25rem;line-height:2.5rem;display:none;" data-v-c6073ba8 data-v-c6073ba8><svg t="1574745035067" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5404" class="icon" data-v-c6073ba8><path d="M526.60727968 10.90185116a27.675 27.675 0 0 0-29.21455937 0c-131.36607665 82.28402758-218.69155461 228.01873535-218.69155402 394.07834331a462.20625001 462.20625001 0 0 0 5.36959153 69.94390903c1.00431239 6.55289093-0.34802892 13.13561351-3.76865779 18.80351572-32.63518765 54.11355614-51.75690182 118.55860487-51.7569018 187.94566865a371.06718723 371.06718723 0 0 0 11.50484808 91.98906777c6.53300375 25.50556257 41.68394495 28.14064038 52.69160883 4.22606766 17.37162448-37.73630017 42.14135425-72.50938081 72.80769204-103.21549295 2.18761121 3.04276886 4.15646224 6.24463696 6.40373557 9.22774369a1871.4375 1871.4375 0 0 0 140.04691725 5.34970492 1866.36093723 1866.36093723 0 0 0 140.04691723-5.34970492c2.24727335-2.98310674 4.21612437-6.18497483 6.3937923-9.2178004 30.66633723 30.70611158 55.4360664 65.4791928 72.80769147 103.21549355 11.00766384 23.91457269 46.15860503 21.27949489 52.69160879-4.22606768a371.15156223 371.15156223 0 0 0 11.514792-91.99901164c0-69.36717486-19.13165746-133.82216804-51.75690182-187.92578088-3.42062944-5.66790279-4.76302748-12.26056868-3.76865837-18.80351632a462.20625001 462.20625001 0 0 0 5.36959269-69.943909c-0.00994388-166.08943902-87.32547796-311.81420293-218.6915546-394.09823051zM605.93803103 357.87693858a93.93749974 93.93749974 0 1 1-187.89594924 6.1e-7 93.93749974 93.93749974 0 0 1 187.89594924-6.1e-7z" p-id="5405" data-v-c6073ba8></path><path d="M429.50777625 765.63860547C429.50777625 803.39355007 466.44236686 1000.39046097 512.00932183 1000.39046097c45.56695499 0 82.4922232-197.00623328 82.5015456-234.7518555 0-37.75494459-36.9345906-68.35043303-82.4922232-68.34111062-45.57627738-0.00932239-82.52019037 30.59548842-82.51086798 68.34111062z" p-id="5406" data-v-c6073ba8></path></svg></div></div></div>
+    <script src="/assets/js/app.801581fb.js" defer></script><script src="/assets/js/3.db9065b5.js" defer></script><script src="/assets/js/1.382b7b04.js" defer></script><script src="/assets/js/15.c8a25392.js" defer></script>
+  </body>
+</html>

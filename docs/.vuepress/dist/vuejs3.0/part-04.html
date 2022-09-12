@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>《Vue.js设计与实现》day05 第四章 响应系统的作用与实现 | 阿源 Hecate的博客</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?d7384eea898f82136bb26f27fb75c1e8";
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+    <meta name="description" content="阿源 Hecate的博客 记录前端学习、日常生活、阅读、美食、运动等感想日记">
+    
+    <link rel="preload" href="/assets/css/0.styles.92648794.css" as="style"><link rel="preload" href="/assets/js/app.801581fb.js" as="script"><link rel="preload" href="/assets/js/3.db9065b5.js" as="script"><link rel="preload" href="/assets/js/1.382b7b04.js" as="script"><link rel="preload" href="/assets/js/17.31029e58.js" as="script"><link rel="prefetch" href="/assets/js/10.27918747.js"><link rel="prefetch" href="/assets/js/11.cf9e6ae3.js"><link rel="prefetch" href="/assets/js/12.e7036d67.js"><link rel="prefetch" href="/assets/js/13.1b6d368e.js"><link rel="prefetch" href="/assets/js/14.1c7699ae.js"><link rel="prefetch" href="/assets/js/15.c8a25392.js"><link rel="prefetch" href="/assets/js/16.38149b44.js"><link rel="prefetch" href="/assets/js/18.9b9ff472.js"><link rel="prefetch" href="/assets/js/4.1a72345b.js"><link rel="prefetch" href="/assets/js/5.6d99caa7.js"><link rel="prefetch" href="/assets/js/6.14cd16ee.js"><link rel="prefetch" href="/assets/js/7.a1fa8449.js"><link rel="prefetch" href="/assets/js/8.11230af2.js"><link rel="prefetch" href="/assets/js/9.aee25f0d.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.92648794.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container" data-v-5bb33761><div data-v-5bb33761><div class="password-shadow password-wrapper-out" style="display:none;" data-v-59e6cb88 data-v-5bb33761 data-v-5bb33761><h3 class="title" data-v-59e6cb88>阿源 Hecate的博客</h3> <p class="description" data-v-59e6cb88>阿源 Hecate的博客 记录前端学习、日常生活、阅读、美食、运动等感想日记</p> <label id="box" class="inputBox" data-v-59e6cb88><input type="password" value="" data-v-59e6cb88> <span data-v-59e6cb88>Konck! Knock!</span> <button data-v-59e6cb88>OK</button></label> <div class="footer" data-v-59e6cb88><span data-v-59e6cb88><i class="iconfont reco-theme" data-v-59e6cb88></i> <a target="blank" href="https://vuepress-theme-reco.recoluan.com" data-v-59e6cb88>vuePress-theme-reco</a></span> <span data-v-59e6cb88><i class="iconfont reco-copyright" data-v-59e6cb88></i> <a data-v-59e6cb88><!---->
+          
+        <!---->
+        2022
+      </a></span></div></div> <div class="hide" data-v-5bb33761><header class="navbar" data-v-5bb33761><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/assets/img/logo.png" alt="阿源 Hecate的博客" class="logo"> <span class="site-name">阿源 Hecate的博客</span></a> <div class="links"><div class="color-picker"><a class="color-button"><i class="iconfont reco-color"></i></a> <div class="color-picker-menu" style="display:none;"><div class="mode-options"><h4 class="title">Choose mode</h4> <ul class="color-mode-options"><li class="dark">dark</li><li class="auto active">auto</li><li class="light">light</li></ul></div></div></div> <div class="search-box"><i class="iconfont reco-search"></i> <input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link"><i class="undefined"></i>
+  首页
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="undefined"></i>
+      阿源 Hecate的博客
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://github.com/HecateET" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="undefined"></i>
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://juejin.cn/user/465848660675048/posts" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="undefined"></i>
+  掘金
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.xiaohongshu.com/user/profile/5e94f5de000000000100a3b1?xhsshare=CopyLink&amp;appuid=5e94f5de000000000100a3b1&amp;apptime=1644722473" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="undefined"></i>
+  美食日记｜小红书
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask" data-v-5bb33761></div> <aside class="sidebar" data-v-5bb33761><div class="personal-info-wrapper" data-v-1fad0c41 data-v-5bb33761><!----> <!----> <div class="num" data-v-1fad0c41><div data-v-1fad0c41><h3 data-v-1fad0c41>7</h3> <h6 data-v-1fad0c41>文章</h6></div> <div data-v-1fad0c41><h3 data-v-1fad0c41>0</h3> <h6 data-v-1fad0c41>标签</h6></div></div> <ul class="social-links" data-v-1fad0c41></ul> <hr data-v-1fad0c41></div> <nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link"><i class="undefined"></i>
+  首页
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="undefined"></i>
+      阿源 Hecate的博客
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://github.com/HecateET" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="undefined"></i>
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://juejin.cn/user/465848660675048/posts" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="undefined"></i>
+  掘金
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.xiaohongshu.com/user/profile/5e94f5de000000000100a3b1?xhsshare=CopyLink&amp;appuid=5e94f5de000000000100a3b1&amp;apptime=1644722473" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="undefined"></i>
+  美食日记｜小红书
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <!----></nav> <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><a href="/" class="sidebar-heading clickable router-link-active"><span>欢迎学习</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/" aria-current="page" class="sidebar-link">学前必读</a></li></ul></section></li><li><section class="sidebar-group depth-0"><a href="/handbook/ConditionalTypes" class="sidebar-heading clickable open"><span>Vue.js设计与实现</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/vuejs3.0/part-about.html" class="sidebar-link">前言：全书讲什么？</a></li><li><a href="/vuejs3.0/part-01.html" class="sidebar-link">第1章 权衡的艺术</a></li><li><a href="/vuejs3.0/part-02.html" class="sidebar-link">第2章 框架设计的核心要素</a></li><li><a href="/vuejs3.0/part-03.html" class="sidebar-link">第3章 Vue.js3的设计思路</a></li><li><a href="/vuejs3.0/part-04.html" aria-current="page" class="active sidebar-link">第4章 响应系统的作用与实现</a></li></ul></section></li><li><section class="sidebar-group depth-0"><a href="/handbook/ConditionalTypes" class="sidebar-heading clickable"><span>基础学习</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/handbook/ConditionalTypes.html" class="sidebar-link">条件类型</a></li><li><a href="/handbook/Generics.html" class="sidebar-link">泛型</a></li></ul></section></li></ul> </aside> <div class="password-shadow password-wrapper-in" style="display:none;" data-v-59e6cb88 data-v-5bb33761><h3 class="title" data-v-59e6cb88>《Vue.js设计与实现》day05 第四章 响应系统的作用与实现</h3> <!----> <label id="box" class="inputBox" data-v-59e6cb88><input type="password" value="" data-v-59e6cb88> <span data-v-59e6cb88>Konck! Knock!</span> <button data-v-59e6cb88>OK</button></label> <div class="footer" data-v-59e6cb88><span data-v-59e6cb88><i class="iconfont reco-theme" data-v-59e6cb88></i> <a target="blank" href="https://vuepress-theme-reco.recoluan.com" data-v-59e6cb88>vuePress-theme-reco</a></span> <span data-v-59e6cb88><i class="iconfont reco-copyright" data-v-59e6cb88></i> <a data-v-59e6cb88><!---->
+          
+        <!---->
+        2022
+      </a></span></div></div> <div data-v-5bb33761><div data-v-5bb33761><main class="page"><section style="display:;"><div class="page-title"><h1 class="title">《Vue.js设计与实现》day05 第四章 响应系统的作用与实现</h1> <div data-v-8a445198><i class="iconfont reco-account" data-v-8a445198><span data-v-8a445198>阿源 Hecate</span></i> <i class="iconfont reco-date" data-v-8a445198><span data-v-8a445198>2022/4/27</span></i> <!----> <!----></div></div> <div class="theme-reco-content content__default"><h1 id="一、前言"><a href="#一、前言" class="header-anchor">#</a> 一、前言</h1> <p>响应系统是<code>Vue.js</code>的重要组成部分，一起来研究下</p> <ul><li><p>讨论什么是响应式数据和副作用函数，然后尝试实现一个相对完善的响应系统。</p> <ul><li><p>可能遇到的问题：</p> <ul><li>如何避免无限递归？</li> <li>为什么需要嵌套的副作用函数？</li> <li>两个副作用函数之间会产生哪些影响？</li> <li>以及其他很多需要考虑的细节</li></ul></li></ul></li> <li><p>详细讨论与响应式数据相关的内容。</p> <ul><li><p><code>Vue.js 3</code>采用<code>Proxy</code>实现响应式数据， 这涉及语言规范层面的只是。</p> <ul><li>包括如何根据语言规范实现对数据对象的代理</li> <li>以及其中的一些重要细节</li></ul></li></ul></li></ul> <p>接下来从认识响应式数据和副作用函数开始，一步一步地了解响应式系统的设计与实现。</p> <h1 id="二、本章内容"><a href="#二、本章内容" class="header-anchor">#</a> 二、本章内容</h1> <h2 id="_2-1-响应式数据与副作用函数"><a href="#_2-1-响应式数据与副作用函数" class="header-anchor">#</a> 2.1 响应式数据与副作用函数</h2> <p><strong>副作用函数指的是会产生副作用的函数</strong>，如下代码：</p> <div class="language- extra-class"><pre class="language-text"><code>function effect(){
+  document.body.innerText = 'hello vue3'
+}
+</code></pre></div><p>当<code>effect</code>函数执行时，它会设置<code>body</code>的文本内容， 但除了<code>effect</code>函数之外的任何函数都可以读取或设置<code>body</code>的文本内容。 也就是，<code>effect</code>函数的执行会直接或间接的影响其他函数的执行，这时我们说<code>effect</code>函数产生了副作用。</p> <p><strong>副作用很容易产生，例如一个函数修改了全局变量，这其实也是一个副作用函数</strong>，如下代码：</p> <div class="language- extra-class"><pre class="language-text"><code>//全局变量
+let val = 1
+
+function effect(){
+  val = 2 //修改全局变量，产生副作用
+}
+</code></pre></div><p>理解了什么是副作用函数，再来说说什么是响应式数据。假设在一个副作用函数中读取了某个对象的属性：</p> <div class="language- extra-class"><pre class="language-text"><code>const obj = {text:'hello world'}
+function effect(){
+  // effect函数的执行会读取 obj.text
+  document.body.innerText = obj.text
+}
+</code></pre></div><p>如上面代码所示，副作用函数<code>effect</code>会设置<code>body</code>元素的<code>innerText</code>属性，其值为 <code>obj.text</code>，当<code>obj.text</code>的值发生变化时，我们希望副作用函数 <code>effect</code>会重新执行：</p> <div class="language- extra-class"><pre class="language-text"><code>obj.text = 'hello vue3' //修改obj.text的值，同时希望副作用函数会重新执行
+</code></pre></div><p>这句代码修改了字符<code>obj.text</code> 的值，我们希望当值变化后，副作用函数会自动重新执行，如果能实现这个目标，那么对象<code>obj</code>就是响应式数据。</p> <p>但是很明显，以上面的代码来看，我们还做不到这一点，因为<code>obj</code>是一个普通对象，当我们修改它的值时，除了值本身发生变化之外，不会有任何其他反应。</p> <p>接下来我们讨论<strong>如何让数据变成响应式数据。</strong></p> <h2 id="_2-2-响应式数据的基本实现"><a href="#_2-2-响应式数据的基本实现" class="header-anchor">#</a> 2.2 响应式数据的基本实现</h2> <p>接着上文的思考，<strong>如何才能让</strong><code>obj</code><strong>变成响应式数据呢？</strong> 通过观察我们能发现两点线索：</p> <ul><li>当副作用函数<code>effect</code>执行时，会触发字段<code>obj.text</code>的读取操作；</li> <li>当修改<code>obj.text</code>的值时，会促发字段<code>obj.text</code>的设置操作。</li></ul> <p>如果我们能拦截一个对象的读取和设置操作，事情就变得简单了，当读取字段<code>obj.text</code>时，我们可以把副作用函数<code>effect</code>存储到一个“桶”里，如下图1所示：</p> <p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6702c106955740f4bb386ebc313fd65e~tplv-k3u1fbpfcp-zoom-1.image" alt=""></p> <p>接着，当设置<code>obj.text</code>时，再把副作用函数<code>effect</code>从&quot;桶&quot;里取出来并执行即可，如下图2所示：</p> <p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/8dd60c3a15fd4b299fefa30b39fc6a09~tplv-k3u1fbpfcp-zoom-1.image" alt=""></p> <p>现在问题的<strong>关键变成了我们如何才能拦截一个对象属性的读取和设置操作。</strong></p> <ul><li>在<code>ES2015</code>之前只能通过<code>Object.defineProperty</code>函数实现，这也是<code>Vue.js 2</code>所采用的方式。</li> <li>在<code>ES2015+</code>中，我们可以使用代理对象<code>Proxy</code> 来实现，这也是<code>Vue.js 3</code>所采用的方式。</li></ul> <p>接下来，我们就根据上述思路，采用<code>Proxy</code>来实现:</p> <div class="language- extra-class"><pre class="language-text"><code>// 存储副作用函数的桶
+const bucket = new Set()
+
+// 原始数据
+const data = {text:'text hello'}
+//对原始数据的代理
+const obj = new Proxy(data,{
+  //拦截读取操作
+  get(target,key){
+    // 将副作用函数effect添加到存储副作用函数的桶中
+    bucket.add(effect)
+    //返回属性值
+    return target[key]
+  },
+  //拦截设置操作
+  set(target,key,newVal){
+    // 设置属性值
+    target[key] = newVal
+    //把副作用函数从桶里取出来并执行
+    bucket.forEach(fn=&gt; fn())
+    // 返回true代表设置操作成功
+    return true
+  }
+})
+</code></pre></div><ul><li><p>首先，我们创建了一个用于存储副作用函数的桶<code>bucket</code>，它是<code>Set</code>类型。</p></li> <li><p>接着定义原始数据<code>data</code>，<code>obj</code>是原始数据的代理对象。</p> <ul><li>分别设置了<code>get</code> 和 <code>set</code> 拦截函数，用于拦截读取和设置操作。</li></ul></li> <li><p>当读取属性时将副作用函数<code>effect</code>添加到桶里。</p> <ul><li>即<code>bucket.add(effect)</code>,然后返回属性值</li></ul></li> <li><p>当设置属性值时先更新原始数据，再将副作用函数从桶里取出并重新执行。</p></li></ul> <p>通过以上步骤，我们就实现了响应式数据。可以用下面的代码来测试一下</p> <div class="language- extra-class"><pre class="language-text"><code>// 副作用函数
+function effect(){
+  document.doby.innerText = obj.text
+}
+
+// 执行副作用函数，触发读取
+effect()
+
+//1秒后修改响应式数据
+setTimeout(()=&gt;{
+  obj.text = 'hello vue3'
+},1000)
+</code></pre></div><p>在浏览器中运行上面这段代码，会得到期望的结果。</p> <p>但是目前的实现还存在很多缺陷，例如我们直接通过名字(effect)来获取副作用函数，这种硬编码的方式很不灵活。副作用函数的名字可以任意取，我们完全可以把副作用函数命名为<code>myEffect</code>，甚至是一个匿名函数，因此我们要想办法去掉这种硬编码的机制。</p> <p>接下来会更详细介绍这一点，以上<strong>我们只需要理解响应式数据的基本实现和工作原理即可。</strong></p> <h2 id="_2-3-设计一个完善的响应系统"><a href="#_2-3-设计一个完善的响应系统" class="header-anchor">#</a> 2.3 设计一个完善的响应系统</h2> <p>在上一节中，我们了解了如何实现响应式数据。但其实在这个过程中我们已经实现了一个微型响应系统，之所以说“微型”，是因为它还不完善，本节我们尝试构造一个更加完善的响应系统。</p> <p>从上面的内容案例中不难看出，一个响应系统的工作流程如下：</p> <ul><li>当<strong>读取</strong>操作发生时，将副作用函数收集到“桶”中；</li> <li>当<strong>设置</strong>操作发生时，从“桶”中取出副作用函数并执行。</li></ul> <p>看上去很简单，但需要处理的细节还真不少。例如在上一节的实现中，我们硬编码了副作用函数的名字（effect），导致一旦副作用函数的名字不叫<code>effect</code>，那么这段代码就不能正确地工作了。</p> <p>而我们希望的是，哪怕副作用函数是一个匿名会按书，也能够被正确地收集到“桶”中。为了实现这一点，我们需要提供一个用来注册副作用函数的机制，如下代码所示：</p> <div class="language- extra-class"><pre class="language-text"><code>// 用一个全局变量存储被注册的副作用函数
+let activeEffect
+
+//effect函数用于注册副作用函数
+function effect(fn){
+  // 当调用effect注册副作用函数时，将副作用函数fn赋值给activeEffect
+  activeEffect = fn
+  // 执行副作用函数
+  fn()
+}
+</code></pre></div><ul><li>首先，定义了一个全局变量<code>activeEffect</code> ，初始值是<code>undefined</code>，它的作用是存储被注册的副作用函数。</li> <li>接着重新定义了一个<code>effect</code>函数，它变成了一个用来注册副作用函数的函数，<code>effect</code>函数接收一个参数<code>fn</code>，即要注册的副作用函数。</li></ul> <p>我们会如下所示使用<code>effect</code>函数</p> <div class="language- extra-class"><pre class="language-text"><code>effect(
+  // 一个匿名的副作用函数
+  ()={
+    doucment.body.innerText = obj.text
+  }
+)
+</code></pre></div><p>可以看到，我们使用一个匿名函数的副作用函数作为<code>effect</code>函数的参数。当<code>effect</code>函数执行时，首先会把匿名的副作用函数<code>fn</code>赋值给全局变量<code>activeEffect</code>。 接着执行被注册的匿名副作用函数<code>fn</code>， 这将会触发响应式数据<code>obj.text</code>的读取操作，进而触发代理对象<code>Proxy</code>的<code>get</code>拦截函数：</p> <div class="language- extra-class"><pre class="language-text"><code>const objt = new Proxy(data,{
+  get(target,key){
+    //将activeEffect中存储的副作用函数收集到“桶”中
+    if(activeEffect){ //新增
+      bucket.add(activeEffect)//新增
+    }
+    return target[key]
+  },
+  set(target,key,newVal){
+    target[key] = newVal
+    bucket.forEach(fn=&gt;fn())
+    return true
+  }
+})
+</code></pre></div><p>如上面的代码所示，由于副作用函数已经存储到了<code>activeEffect</code>中，所以在<code>get</code>拦截函数内应该把<code>activeEffect</code>收集到“桶”中，这样响应系统就不依赖副作用函数的名字了。</p> <p>但如果我们再对这个系统稍加测试，例如在响应式数据<code>obj</code>上设置一个不存在的属性时：</p> <div class="language- extra-class"><pre class="language-text"><code>effect(){
+  // 匿名副作用函数
+  ()=&gt;{
+    console.log('effect run') // 会打印两次
+    document.body.innerText = obj.text
+  }
+}
+
+setTimeout(()=&gt;{
+  //副作用函数中并没用读取netExist属性的值
+  obj.notExist = 'hello vue3'
+},1000)
+</code></pre></div><p>可以看到，匿名副作用函数内部读取了一个字段<code>obj.text</code>的值，于是匿名副作用函数与字段<code>obj.text</code>之间会建立响应联系。</p> <p>接着，我么开启了一个定时器，一秒钟后为对象<code>obj</code>添加新的<code>notExist</code>属性。我们知道，在匿名副作用函数内并没有读取<code>obj.notExist</code>属性的值，所以理论上， 字段<code>obj.notExist</code>并没有与副作用建立响应关系，因此，定时器内语句的执行不应该触发匿名副作用函数重新执行。</p> <p>但如果我们执行上述这段代码就会发现，定时器到时后，匿名副作用函数却重新执行了，这是不正确的。为了解决这个问题，我们需要重新设计“桶”的数据结构。</p> <p>在上节的例子中，我们使用了个<code>Set</code>数据结构作为存储副作用函数的“桶”。导致该问题的根本原因是，我们<strong>没有在副作用函数与被操作的目标字段之间建立明确的关系</strong>。</p> <p>例如当读取属性时，无论设置的是哪一个属性，也都会把“桶”里的副作用函数取出来并执行。副作用函数与被操作的字段之间没有明确的联系。</p> <p>解决方法很简单，只需要在副作用函数与被操作的字段之间建立联系即可，这就需要我们重新设计“桶”的数据结构，而不能简单地使用<code>Set</code>类型地数据作“桶”了。</p> <p>那应该设计怎么样的数据结构呢？ 在回答这个问题之前，我们需要先仔细观察下面的代码：</p> <div class="language- extra-class"><pre class="language-text"><code>effect(function effectFn(){
+  document.body.innerText = obj.text
+})
+</code></pre></div><p>在这段代码中存在三个角色：</p> <ul><li>被操作（读取）的代理对象<code>obj</code>；</li> <li>被操作（读取）的字段名<code>text</code>；</li> <li>使用<code>effect</code>函数注册的副作用函数<code>effectFn</code></li></ul> <p>如果<code>target</code>来表示一个代理对象所代理的原始对象，用<code>key</code>来表示被操作的字段名，用<code>effectFn</code>来表示被注册的副作用函数，那么可以为这三个角色建立如下关系：</p> <div class="language- extra-class"><pre class="language-text"><code>target
+   L__ key
+        L___ effectFn
+    
+</code></pre></div><p>这种树形结构，下面举几个例子来对其进行补充说明。</p> <p>如果有两个副作用函数同时读取同一个对象的属性值：</p> <div class="language- extra-class"><pre class="language-text"><code>effect(function effectFn1(){
+  obj.text 
+})
+
+effect(function effectFn2(){
+  obj.text 
+})
+</code></pre></div><p>那么关系如下：</p> <div class="language- extra-class"><pre class="language-text"><code>target
+   L__ text
+        L___ effectFn 
+        L___ effectFn
+</code></pre></div><p>如果一个副作用函数中读取了同一个对象的两个不同属性：</p> <div class="language- extra-class"><pre class="language-text"><code>effect(function effectFn(){
+  obj.text1
+  obj.text2
+})
+</code></pre></div><p>那么关系如下：</p> <div class="language- extra-class"><pre class="language-text"><code>target
+   L__ text1
+        L___ effectFn 
+        
+   L__ text2
+        L___ effectFn
+</code></pre></div><p>如果在不同的副作用函数中读取了两个不同对象的不同属性：</p> <div class="language- extra-class"><pre class="language-text"><code>effect(function effectFn1(){
+  obj1.text1
+})
+effect(function effectFn2(){
+  obj2.text2
+})
+</code></pre></div><p>那么关系如下：</p> <div class="language- extra-class"><pre class="language-text"><code>target1
+   L__ text1
+        L___ effectFn1
+target2        
+   L__ text2
+        L___ effectFn2
+</code></pre></div><p>总之，这其实就是一个树型数据结构。这个联系建立起来之后，就可以解决前文提到的问题了。 拿上面的例子来说， 如果我们设置了<code>obj2.text2</code>的值，就只会导致<code>effectFn2</code>函数重新执行，并不会导致<code>effectFn1</code>函数重新执行。</p> <p>接下来我们尝试用代码来实现这个新的“桶”。 首先，需要使用<code>WeakMap</code>替代<code>Set</code>作为桶的数据结构：</p> <div class="language- extra-class"><pre class="language-text"><code>// 存储到副作用函数的桶
+const bucket = new WeakMap()
+</code></pre></div><p>然后修改<code>get/set</code>拦截器代码:</p> <div class="language- extra-class"><pre class="language-text"><code>const obj = new Proxy(data,{
+  //拦截器读取操作
+  get(target,key){
+    //没有 activeEffect,直接return 
+    if(!activeEffect) return
+    // 根据target从“桶”中取得depsMap，它也是一个Map类型，key--〉effects
+    let depsMap = bucket.get(target)
+    // 如果不存在depsMap，那么新建一个Map并与target关联
+    if(!depsMap){
+      bucket.set(target,(depsMap = new Map())
+    }
+    // 再根据key从depsMap中取得deps，它是一个Set类型
+    //里面存储着所有与当前key相关联的副作用函数：effects
+    let deps = depsMap.get(key)
+    // 如果deps不存在，同样在新建一个Set并与key关联
+    if(!deps){
+      depsMap.set(key,(deps = new Set()))
+    }
+      
+    // 最后将当前激活的副作用函数添加到“桶”里
+    deps.add(activeEffect)
+    
+    //返回属性值
+    return target[key]
+  },
+    
+  //拦截设置操作
+  set(target,key,newVal){
+    //设置属性值
+    target[key] = newVal
+    // 根据target 从桶中取得depsMap，它是key--&gt; effects
+    const depsMap = bucket.get(target)
+    if(!depsMap) return 
+    //根据key取得所副作用函数effects
+    const effects = depsMap.get(key)
+    //执行副作用函数
+    effects &amp;&amp; effects.forEach(fn=&gt;fn())
+  }
+})
+</code></pre></div><p>从这段代码可以看出构建数据结构的方式，我们分别使用了<code>WeakMap</code>、<code>Map</code>和<code>Set</code>：</p> <ul><li><code>WeakMap</code>由<code>target --&gt; Map</code> 构成</li> <li><code>Map</code>由<code>key--&gt;Set</code>构成</li></ul> <p>其中<code>WeakMap</code>的键是原始对象<code>target</code>，<code>WeakMap</code>的值是一个<code>Map</code>实例，而<code>Map</code>的键是原始对象<code>target</code>的<code>key</code>，<code>Map</code>的值是一个由副作用函数组成的<code>Set</code>。它们的关系如图3所示：</p> <p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7bfffce694de4fafae14e6e99c030e17~tplv-k3u1fbpfcp-zoom-1.image" alt=""></p> <p>为了方便描述，我们把关系图3中的<code>Set</code>数据结构所存储的副作用函数集合称为<code>key</code>的<strong>依赖集合</strong>。</p> <p>搞清了它们之间的关系，我们有必要解释一下这里为什么要使用<code>WeakMap</code>，这其实涉及了<code>WeakMap</code>和<code>Map</code>的区别，我们用一段代码解释：</p> <div class="language- extra-class"><pre class="language-text"><code>const map = new Map()
+const weakmap = new WeakMap()
+
+(function(){
+  const foo = {foo:1};
+  const bar = {bar:2};
+  
+  map.set(foo,1);
+  weakmap.set(bar,2);
+})
+</code></pre></div><p>首先，我们定义了<code>map</code>和<code>weakmap</code>常量，分别对应<code>Map</code> 和<code>WeakMap</code>的实例。</p> <p>接着定义了一个立即执行的函数表达式（IIFE），在函数表达式内部定义了两个对象：<code>foo</code>和<code>bar</code>，这两个对象分别作为<code>map</code>和<code>weakmap</code>的<code>key</code>。当该函数表达式执行完毕后，对于对象<code>foo</code>来说，它仍然作为<code>map</code>的<code>key</code>被引用着，因此<strong>垃圾回收器</strong>（grabage collector）不会把它从内存中移除，我们仍然可以通过<code>map.keys</code>打印出对象<code>foo</code> <strong>。</strong></p> <p>然而这对于对象<code>bar</code>来说，由于<code>WeakMap</code>的<code>key</code>是弱引用，它不影响垃圾回收器的工作，所以一旦表达式执行完毕，垃圾回收器就会把对象<code>bar</code>从内存中移除，并且我们无法获取<code>weakmap</code>的<code>key</code>值，也就无法通过<code>weakmap</code>取得对象<code>bar</code>。</p> <p>简单地说，<code>WeakMap</code>对<code>key</code>是弱引用，不影响垃圾回收器的工作。 据这个特性可知，一旦<code>key</code>被垃圾回收器回收，那么对应的键和值就访问不到了。</p> <p>所以<code>WeakMap</code>经常用于存储那些只有当<code>key</code>所引用的对象存在时（没有被回收）才有价值的信息，例如上面的场景中，如果<code>target</code>对象没有任何引用了，说明用户侧不再需要它了，这时垃圾回收器会完成回收任务。</p> <p>但如果使用<code>Map</code>来代替<code>WeakMap</code>，那么即使用户侧的代码对<code>target</code>没有任何引用，这个<code>target</code>也不会被回收，最有可能导致内存溢出。</p> <p>最后，我们对上文的代码再做一些封装处理。</p> <p>在目前的实现中，当读取属性值时，我们直接在<code>get</code>拦截函数里编写把副作用函数收集到“桶”里的这部分逻辑，但更好的做法是将这部分逻辑单独封装到一个<code>track</code>函数中，函数的名字叫做<code>track</code>是为了表达<strong>追踪</strong>的含义。 同样，我们也可以把<strong>触发</strong>副作用函数重新执行的逻辑封装到<code>trigger</code>函数中：</p> <div class="language- extra-class"><pre class="language-text"><code>const obj = new Proxy(data,{
+  //拦截读取操作
+  get(target,key){
+    //将副作用函数activeEffect添加到存储副作用函数的桶中
+    tract(target,key)
+    return target[key]
+  },
+  //拦截设置操作
+  set(target,key,newVal){
+    //设置属性值
+    target[key] = newVal
+    //把副作用函数从桶里取出并执行
+    trigger(target,key)
+  }
+})
+
+//在get拦截函数内调用track函数追踪变化
+function track(target,key){
+  //没有activeEffect，直接return
+  if(!activeEffect) return
+  let depsMap = bucket.get(target)
+  if(!depsMap){
+    bucket.set(target,(depsMap = new Map()))
+  }
+  let deps = depsMap.get(key)
+  if(!deps){
+    depsMap.set(key,(deps = new Set()))
+  }
+  deps.add(activeEffect)
+}
+
+//在set拦截函数内调用tirgger函数触发变化
+function trigger(target,key){
+  const depsMap = bucket.get(target)
+  if(!depsMap) return
+  const effects = depsMap.get(key)
+  effects &amp;&amp; effects.forEach(fn =&gt; fn())
+}
+</code></pre></div><p>如以上代码所示，分别把逻辑封装到<code>track</code>和<code>trigger</code>函数内，这能为我们带来极大的灵活性。</p> <h2 id="_2-4-分支切换与cleanup"><a href="#_2-4-分支切换与cleanup" class="header-anchor">#</a> 2.4 分支切换与<code>cleanup</code></h2> <p>首先，我们需要明确分支切换的定义，如下面代码所示：</p> <div class="language- extra-class"><pre class="language-text"><code>const data = {ok:true,text:'hello world'}
+const obj = new Proxy(data,{/*....*/})
+
+effect(function effectFn(){
+  document.body.innerText = obj.ok ? obj.text : 'not'
+})
+</code></pre></div><p>当<code>effectFn</code>函数内部存在一个三元表达式，根据字段<code>obj.ok</code>值当不同会执行不同的代码分支。当字段<code>obj.ok</code>的值发生变化时，代码执行的分支会跟着变化，这就是所谓的<strong>分支切换</strong>。</p> <p>分支切换可能会产生遗留的副作用函数。拿上面这段代码来说：</p> <ul><li>字段<code>obj.ok</code>的初始值为<code>true</code>，这是会读取字段<code>obj.text</code>的值</li> <li>所以当<code>effectFn</code>函数执行时会触发字段<code>obj.ok</code>和字段<code>obj.text</code>这两个属性的读取操作</li></ul> <p>此时副作用函数<code>effectFn</code>与响应式数据之间建立的联系如下：</p> <div class="language- extra-class"><pre class="language-text"><code>data
+   L___ ok
+         L___effectFn
+   L___ text
+         L___effectFn
+</code></pre></div><p>图4，给出了更详细的描述</p> <p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d3eee484bb17453a944408be43a2ff06~tplv-k3u1fbpfcp-zoom-1.image" alt=""></p> <p>可以看到，副作用函数<code>effectFn</code>分别被字段<code>data.ok</code>和字段<code>data.text</code>所对应的依赖集合收集。当字段<code>obj.ok</code>的值修改为<code>false</code>，并触发副作用函数重新执行后，由于此时字段<code>obj.text</code>不会读取，只会触发字段<code>obj.ok</code>的读取操作，所以理想情况下副作用函数<code>effectFn</code>不应该被字段<code>obj.text</code>所对应的依赖集合收集，如图5所示：</p> <p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a14f8b17beb14435a5d7c10519b55176~tplv-k3u1fbpfcp-zoom-1.image" alt=""></p> <p>但按照前文的实现，我们还做不到这一点。也就是说，当我们把字段<code>obj.ok</code>的值修改为<code>false</code>，并触发副作用函数重新执行后，整个依赖关系仍然保持图4所描述的那样，这是久产生了遗留的副作用函数。</p> <p>遗留的副作用函数会导致不必要的更新，拿下面这段代码来说：</p> <div class="language- extra-class"><pre class="language-text"><code>const data = {ok:true,text:'hello world'}
+cosnt obj = new Proxy(data,{/*...*/})
+
+effect(function effectFn(){
+  document.body.innerText = obj.ok ? obj.text : 'not'
+})
+</code></pre></div><p><code>obj.ok</code>的初始值为<code>true</code>，当我们将其修改为<code>false</code>后：</p> <div class="language- extra-class"><pre class="language-text"><code>obj.ok = false
+</code></pre></div><p>这会触发更新，即副作用函数会重新执行。但由于此时<code>obj.ok</code>的值为<code>false</code>，所以不再会读取字段<code>obj.text</code>的值。 换句话说，无论字段<code>obj.text</code>的值如何改变，<code>document.body.innerText</code>的值始终都是字符串'not'。</p> <p>所以最好的结果是：无论<code>obj.text</code>的值怎么变，都不需要重新执行副作用函数。但事实并非如此，如果我们尝试修改<code>obj.text</code>的值：</p> <div class="language- extra-class"><pre class="language-text"><code>obj.text = 'hello vue3'
+</code></pre></div><p>这仍然会导致副作用函数重新执行，即使<code>document.body.innerText</code>的值不需要变化。</p> <p>解决这个问题的思路很简单：每次副作用函数执行时，我们可以先把它从所有与之关联的依赖集合中删除，如图6所示：</p> <p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c43bbd5a68b040ae863c0065499397dc~tplv-k3u1fbpfcp-zoom-1.image" alt=""></p> <p>当副作用函数执行完毕后， 会重新建立联系，但在新的联系中不会包含遗留的副作用函数，即图5所描述的那样。所以，如果我们能做到每次副作用函数执行前，将其从相关联的依赖集合中移除，那么问题就迎刃而解了。</p> <p>要将一个副作用函数从所有与之关联的依赖集合中移除，就需要明确知道哪些依赖集合中包含它，因此我们需要重新设计副作用函数，如下面的代码所示。</p> <p>在<code>effect</code>内部我们定义了新的<code>effectFn</code>函数，并为其添加了<code>effectFn.deps</code>属性，该属性是一个数组，用来存储包含当前副作用函数的依赖集合：</p> <div class="language- extra-class"><pre class="language-text"><code>//用一个全局变量存储被注册的副作用函数
+let activeEffect
+function effect(fn){
+  const effectFn=()=&gt;{
+    //当effectFn执行时，将其设置为当前激活的副作用函数
+    activeEffect = effectFn
+    fn()
+  }
+  //activeEffect.deps用来存储所有与该副作用函数相关联的依赖集合
+  effectFn.deps = []
+  //执行副作用函数
+  effectFn()  
+}
+</code></pre></div><p>那么<code>effectFn.deps</code>数组中的依赖集合是如何收集的呢？其实是在<code>track</code>函数中：</p> <div class="language- extra-class"><pre class="language-text"><code>function track(target,key){
+  //没有activeEffect，直接return
+  if(!activeEffect) return
+  let depsMap = bucket.get(target)
+  if(!depsMap){
+    bucket.set(target,(depsMap = new Map()))
+  }
+  let deps = depsMap.get(key)
+  if(!deps){
+    depsMap.set(key,(deps = new Set()))
+  }
+  
+  //把当前激活的副作用函数添加到依赖集合deps中
+  deps.add(activeEffect)
+  
+  //deps就是一个当前副作用函数存在联系的依赖集合
+  //将其添加到activeEffect.deps数组中
+  activeEffect.deps.push(deps) //新增
+}
+</code></pre></div><p>如以上代码所示，在<code>track</code>函数中我们将执行的副作用函数<code>activeEffect</code>添加到依赖集合<code>deps</code>中，这说明<code>deps</code>就是一个与当前副作用函数存在联系的依赖集合，于是我们也把它添加到<code>activeEffect.deps</code>数组中，这样就完成了对依赖集合的收集。如图7描述了这一步所建立的关系。</p> <p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b515d18eebfb4e38a0f1b60c94986118~tplv-k3u1fbpfcp-zoom-1.image" alt=""></p> <p>有了这个联系后，我们就可以在每次副作用函数执行时，根据<code>effectFn.deps</code>获取所有相关联的依赖集合，进而将副作用函数从依赖集合中移除：</p> <div class="language- extra-class"><pre class="language-text"><code>//用一个全局变量存储被注册的副作用函数
+let activeEffect
+function effect(fn){
+  const effectFn = ()=&gt;{
+    //调用cleanup函数完成清除工作
+    cleanup(effectFn)
+    activeEffect = effectFn
+    fn()
+  }
+  effectFn.deps = []
+  effectFn()
+}
+</code></pre></div><p>下面是<code>cleanup</code>函数的实现：</p> <div class="language- extra-class"><pre class="language-text"><code>function cleanup(effectFn){
+  // 遍历effectFn.deps数组
+  for(let i=0; i&lt; effectFn.deps.length; i++){
+    //deps是依赖集合
+    const deps =effectFn.deps[i]
+    //将effectFn从依赖集合中移除
+    deps.delete(effectFn)
+  }
+  //最后需要重置effectFn.deps数组
+  effectFn.deps.length=0
+}
+</code></pre></div><p><code>cleanup</code>函数接收副作用函数作为参数，遍历副作用函数的<code>effectFn.deps</code>数组，该数组的每一项都是一个依赖集合，然后将该副作用函数从依赖集合中移除，最后重置<code>effectFn.deps</code>数组。</p> <p>至此，我们的响应式系统已经可以避免副作用函数产生遗留了。但如果你尝试运行代码，会发现目前的实现会导致无限循环执行，问题出现在<code>trigger</code>函数中：</p> <div class="language- extra-class"><pre class="language-text"><code>function trigger(target,key){
+  const depsMap = bucket.get(target)
+  if(!depsMap) return
+  const effects = depsMap.get(key)
+  effects &amp;&amp; effects.forEach(fn =&gt; fn()) //问题出在这句代码
+}
+</code></pre></div><p>在<code>trigger</code>函数内部，我们遍历<code>effects</code>集合，它是一个<code>Set</code>集合，里面存储着副作用函数。</p> <p>当副作用函数执行时，会调用<code>cleanup</code>进行清除，实际上就是从<code>effects</code>集合中将当前执行的副作用函数剔除，但是副作用函数的执行会导致其重新被收集到集合中，而此时对于<code>effects</code>集合的便利仍在进行。这个行为可以用如下简短代码来表达：</p> <div class="language- extra-class"><pre class="language-text"><code>const set = new Set([1])
+
+set.forEach(item=&gt;{
+  set.delete(1)
+  set.add(1)
+  console.log('遍历中')
+})
+</code></pre></div><p>在上面这段代码中，我们创建了一个集合<code>set</code>，它里面有一个元素数字1，接着我们调用<code>forEach</code>遍历了该集合。在遍历过程中，首先调用<code>delete(1)</code>删除数字1，紧接着调用<code>add(1)</code>将数字1加回，最后打印‘遍历中’。如果我们在浏览器中执行这段代码，就会发现它会在这无限执行下去。</p> <p>语言规范中对此有明确的说明：<strong>在调用</strong><code>forEach</code><strong>遍历</strong><code>Set</code><strong>集合时候，如果一个值已经被访问过了，但该值被删除并重新添加到集合，如果此时</strong><code>forEach</code><strong>遍历没有结束，那么该值就会重新被访问。</strong></p> <p>因此，上面的代码会无限执行。解决办法很简单，我们可以构造另一个<code>Set</code>集合并遍历它：</p> <div class="language- extra-class"><pre class="language-text"><code>const set = new Set([1])
+
+const newSet = new Set(set)
+newSet.forEach(item=&gt;{
+  set.delete(1)
+  set.add(1)
+  console.log('遍历中')
+})
+</code></pre></div><p>这样就不会无限执行了。回到<code>trigger</code>函数，我们需要同样的手段来避免无限执行：</p> <div class="language- extra-class"><pre class="language-text"><code>function trigger(target,key){
+  const depsMap = bucket.get(target)
+  if(!depsMap) return
+  const effects = bucket.get(key)
+  
+  const effectsToRun = new Set(effects) //新增
+  effectToRun &amp;&amp; effectToRun.forEach(effectFn =&gt; effectFn()) //新增
+  // effects &amp;&amp; effects.forEach(effectFn =&gt; effectFn()) //删除
+}
+</code></pre></div><p>如上代码所示，我们新构造了<code>effectToRun</code>集合并遍历它，代替直接遍历<code>effects</code>集合，从而避免了无限执行。</p> <p>\</p> <p>提示： ECMA关于<code>Set.prototype.forEach</code>的规范，可参见<code>ECMAScript 2020 Language Specification</code>。</p> <h2 id="_2-5-嵌套与effect与effect栈"><a href="#_2-5-嵌套与effect与effect栈" class="header-anchor">#</a> 2.5 嵌套与<code>effect</code>与<code>effect</code>栈</h2> <p><code>effect</code>是可以发生嵌套的，例如：</p> <div class="language- extra-class"><pre class="language-text"><code>effect(function effectFn1(){
+  effect(function effectFn2(){
+    /*...*/
+  })
+  /*...*/
+})
+</code></pre></div><p>在上面这段代码中，<code>effectFn1</code>内部嵌套了<code>effectF2</code>,<code>effectF1</code>的执行会导致<code>effectF2</code> 的执行。</p> <p>那么什么场景下会出现嵌套的<code>effect</code>呢？拿<code>Vue.js</code>来说，实际上<code>Vue.js</code>的渲染函数就是在一个<code>effect</code>中执行的：</p> <div class="language- extra-class"><pre class="language-text"><code>//Foo组件
+const Foo = {
+  render(){
+    return /*...*/
+  }
+}
+</code></pre></div><p>在一个<code>effect</code>中执行<code>Foo</code>组件的渲染函数：</p> <div class="language- extra-class"><pre class="language-text"><code>effect(()=&gt;{
+   Foo.render() 
+})
+</code></pre></div><p>当组建发生嵌套时，例如<code>Foo</code>组件渲染了<code>Bar</code>组件：</p> <div class="language- extra-class"><pre class="language-text"><code>//Bar组件
+const Bar = {
+  render(){/*...*/}
+}
+
+//Foo组件渲染了Bar组件
+const Foo = {
+  render(){
+    return &lt;Bar /&gt; //jsx语法
+  }
+}
+</code></pre></div><p>此时就发生了<code>effect</code>嵌套，它相当于：</p> <div class="language- extra-class"><pre class="language-text"><code>effect(()=&gt;{
+  Foo.render()
+  //嵌套
+  effect(()=&gt;{
+    Bar.render()
+  })
+})
+</code></pre></div><p>这个例子说明了为什么<code>effect</code>要设计成可嵌套的。</p> <p>接下来，我们需要搞清楚，如果<code>effect</code>不支持嵌套会发生什么？ 实际上，按照前文的介绍与实现来看，我们所实现的响应系统并不支持<code>effect</code>嵌套，可以用下面的代码来测试：</p> <div class="language- extra-class"><pre class="language-text"><code>//原始数据
+const data = {foo:true,bar:true}
+//代理对象
+const obj = new Proxy(data,{/*...*/})
+
+//全局变量
+let temp1，temp2
+
+// effectFn1嵌套了effectFn2
+effect(function effectFn1(){
+  console.log('effectFn1 执行')
+  
+  effect(function effectFn2(){
+    console.log('effectFn2 执行')
+    //在effectFn2中读取obj.bar属性
+    temp2=obj.bar
+  })
+  //在effectFn1 中读取obj.foo属性
+  temp1 = obj.foo
+})
+</code></pre></div><p>在上面这段代码中， <code>effectFn1</code>内部嵌套了<code>effectFn2</code>，很明显，<code>effectFn1</code>的执行会导致<code>effectFn2</code>的执行。</p> <p>需要注意的是，我们在 <code>effectFn2</code>中读取了字段<code>obj.bar</code>，在<code>effectFn1</code>中读取了字段<code>obj.foo</code>，并且<code>effectFn2</code>的执行先对于字段<code>obj.foo</code>的读取操作。</p> <p>在理想情况下，我们希望副作用函数与对象属性之间的联系如下：\</p> <div class="language- extra-class"><pre class="language-text"><code>data
+  L___foo
+     L___effectFn1
+  L___bar
+     L___effectFn2
+</code></pre></div><p>在这种情况下，我们希望当修改<code>data.foo</code>时会触发<code>effectFn1</code>执行。由于<code>effectFn2</code>嵌套在<code>effectFn1</code>里，所以会间接触发<code>effectFn2</code>执行，而当修改<code>obj.bar</code>时，只会触发 <code>effectFn2</code>执行。但结果不是这样的，我们尝试修改<code>obj.foo</code>的值，会发现输出为：</p> <div class="language- extra-class"><pre class="language-text"><code>'effectFn1 执行'
+'effectFn2 执行'
+'effectFn2 执行'
+</code></pre></div><p>一共打印三次， 前两次分别是副作用函数<code>effectFn1</code>与<code>effectFn2</code>初始执行的打印结果， 到这一步是正常的，问题出在第三行打印。我们修改了字段<code>obj.foo</code>的 值，发现<code>effectFn1</code>并没有重新执行，反而使得<code>effectFn2</code>重新执行了，这显然不符合预期。</p> <p>问题出现在哪里呢？其实就出在我们实现的<code>effect</code>函数与<code>activeEffect</code>上。观察下面这段代码：</p> <div class="language- extra-class"><pre class="language-text"><code>//用一个全局变量存储当前激活的effect函数
+let activeEffect
+function effect(fn){
+  const effectFn = () =&gt;{
+    cleanup(effectFn)
+    //当调用effect注册副作用函数时，将副作用函数复制给activeEffect
+    activeEffect = effectFn
+    fn()
+    // activeEffect.deps 用来存储所有与该副作用函数相关的依赖合集
+    effectFn.deps = []
+    //执行副作用函数
+    effectFn()
+  }
+}
+</code></pre></div><p>我们用全局变量 <code>activeEffect</code>来存储通过<code>effect</code>函数注册的副作用函数，这意味着同一时刻<code>activeEffect</code>所存储的副作用函数只能有一个。当副作用函数发生嵌套时，内层副作用函数的执行会覆盖<code>activeEffect</code>的值，并且永远不会恢复到原来的值。这时如果再有响应式数据进入依赖收集，即使这个响应式数据是在外层副作用函数中读取的，它们收集到的副作用函数也都会是内层副作用函数，这就是问题所在。\</p> <p>为了解决这个问题，我们需要一个副作用函数栈<code>effectStack</code>，在副作用函数执行时，将当前副作用函数压入栈中，待副作用函数执行完毕后将其从栈中弹出，并始终让<code>activeEffect</code>指向栈顶的副作用函数。这样就能做到一个响应式数据只会收集直接读取其值的副作用函数，而不会出现互相影响的情况，如下代码所示：</p> <div class="language- extra-class"><pre class="language-text"><code>//用一个全局变量存储当前激活的effect函数
+let activeEffect
+//effect栈
+const effectStack = [] //新增
+
+function effect(fn){
+  const effectFn = () =&gt; {
+    cleanup(effectFn)
+    //当调用effect注册副作用函数时，将副作用函数复制给activeEffect
+    activeEffect = effectFn
+    //在调用副作用函数之前将当前副作用函数压入栈中
+    effectStack.push(effectFn) //新增
+    fn()
+    
+    //在当前副作用函数执行完毕后，将当前副作用函数弹出栈，并把activeEffect还原为之前的值
+    effectStack.pop() //新增
+    activeEffect = effectStack[effectStack.length-1]//新增
+  }
+  // activeEffect.deps 用来存储所有与该副作用函数相关的依赖集合
+  effectFn.deps = []
+  //执行副作用函数
+  effectFn()
+}
+</code></pre></div><p>我们定义了<code>effectStack</code>数组，用它来模拟栈，<code>activeEffect</code>没有变化， 它仍然指向当前正在执行的副作用函数。不同的是，当前执行的副作用函数会被压入栈顶，这样当副作用函数发生嵌套时，栈底存储的就是外层副作用函数，而栈顶存储的则是内层副作用函数。如果8所示。</p> <p>当内层副作用函数<code>effectFn2</code>执行完毕后， 它会被弹出栈，并将副作用函数<code>effectFn1</code>设置为<code>activeEffect</code>,如图9所示。</p> <p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c187271f386a44409a035c73c3a51d83~tplv-k3u1fbpfcp-zoom-1.image" alt=""></p> <p>如此依赖，响应式数据就只会手机直接读取其值的副作用函数作为依赖，从而避免发生错乱。</p> <h2 id="_2-6-避免无限递归循环"><a href="#_2-6-避免无限递归循环" class="header-anchor">#</a> 2.6 避免无限递归循环</h2> <p>如前文所说，实现一个完善的响应系统要考虑诸多细节。而本节要介绍的无限递归循环就是其中之一，还是举个例子：</p> <div class="language- extra-class"><pre class="language-text"><code>const data = {foo:1}
+const obj = new Proxy(data,{/*...*/})
+
+effect(()=&gt;obj.foo++)
+</code></pre></div><p>可以看到， 在effect注册的副作用函数内有一个自增操作<code>obj.foo++</code>，该操作会引起栈溢出：</p> <div class="language- extra-class"><pre class="language-text"><code>Uncaught RangeError：Maxinum call stack size exceeded
+</code></pre></div><p>为什么会这样呢？接下来我们就尝试搞清楚这个问题，并提供解决方案。</p> <p>实际上，我们可以把<code>obj.foo++</code> 这个自增操作分开来看，它相当于：</p> <div class="language- extra-class"><pre class="language-text"><code>effect(()=&gt;{
+  //语句
+  obj.foo = obj.foo+1
+})
+</code></pre></div><p>在这个语句中， 既会读取<code>obj.foo</code>的值，又会设置<code>obj.foo</code>的值，而这就是导致问题的根本原因。</p> <p>我们可以尝试推理下代码的执行流程：</p> <ul><li>首先读取<code>obj.foo</code>的值，这就会触发<code>track</code>操作，将当前副作用函数收集到“桶”中</li> <li>接着将其加1后再赋值给<code>obj.foo</code>，此时会触发<code>trigger</code>操作，即把“桶”中的副作用函数取出并执行。</li></ul> <p>但问题是该副作用函数正在执行中， 还没有执行完毕，就要开始下一次的执行。这样会导致无限递归地调用自己，于是就产生了栈溢出。</p> <p>解决办法并不难。通过分析这个问题我们能够发现，读取和设置操作是在同一个副作用函数内进行的。 此时无论是<code>track</code>时收集的副作用函数，还是<code>trigger</code>时要触发执行的副作用函数都是<code>activeEffect</code>。</p> <p>基于此，我们可以在<code>trigger</code>动作发生时增加守卫条件：<strong>如果</strong><code>trigger</code><strong>触发执行的副作用函数与当前正在执行的副作用函数相同，则不触发执行。</strong> 如下代码所示：</p> <div class="language- extra-class"><pre class="language-text"><code>function trigger(target,key){
+  const depsMap = bucket.get(target)
+  if(!depsMap) return 
+  const effects = depsMap.get(key)
+  
+  const effectsToRun = new Set()
+  
+  effects &amp;&amp; effects.forEach(effectFn =&gt;{
+    //如果trigger触发执行的副作用函数与当前正在执行的副作用函数相同，则不触发执行
+    if(effectFn !== activeEffect){ //新增
+      effectsToRun.add(effectFn)
+    }
+  })
+  
+  effectsToRun.forEach(effectFn =&gt; effectFn())
+  // effects &amp;&amp; effects.forEach(effectFn =&gt; effectFn())
+}
+</code></pre></div><p>这样我们就能够避免无限递归调用， 从而避免栈溢出。</p> <h2 id="_2-7-调度执行"><a href="#_2-7-调度执行" class="header-anchor">#</a> 2.7 调度执行</h2> <p>可调度性是响应系统非常重要的特性。首先我们需要明确说明是可调度性。</p> <p>所谓可调度，指的是当<code>trigger</code>动作触发副作用函数重新执行时，有能力决定副作用函数执行的时机、次数以及方式。</p> <p>首先来看一下，如何决定副作用函数的执行方式，以下面的代码为例：</p> <div class="language- extra-class"><pre class="language-text"><code>const data = {foo:1}
+const obj = new Proxy(data,{/*...*/})
+
+effect(()=&gt;{
+  console.log(obj.foo)
+})
+
+obj.foo++
+
+console.log('结束了')
+</code></pre></div><p>在副作用函数中，我们首先使用<code>console.log</code>语句打印<code>obj.foo</code>的值，接着对<code>obj.foo</code>执行自增操作，最后使用<code>console.log</code>语句打印‘结束了’。 这段代码的输出结果如下：</p> <div class="language- extra-class"><pre class="language-text"><code>1
+2
+'结束了'
+</code></pre></div><p>现在假设需求有变，输出顺序需要调整为：</p> <div class="language- extra-class"><pre class="language-text"><code>1
+'结束了'
+2
+</code></pre></div><p>根据打印结果我们很容易想到对策，即把语句<code>obj.foo++</code>和语句<code>console.log('结束了')</code>位置互换即可。那么有没有什么办法能够在不调整代码的情况下实现需求呢？</p> <p>这时就需要响应系统支持<strong>调度。</strong></p> <p>我们可以为<code>effect</code>函数设计一个选项参数<code>options</code>,允许用户指定调度器：</p> <div class="language- extra-class"><pre class="language-text"><code>effect(
+  ()=&gt;{
+    console.log(obj.foo)
+  },
+  //options
+  {
+    //调度器scheduler是一个函数
+    scheduler(fn){
+      //...
+    }
+  }
+)
+</code></pre></div><p>如上面的代码所示，用户在调用<code>effect</code>函数注册副作用函数时，可以传递第二个参数<code>options</code>。它是一个对象，其中允许指定<code>scheduler</code>调度函数，同时在<code>effect</code>函数内部我们需要把<code>options</code>选项挂载到对应的副作用函数上：</p> <div class="language- extra-class"><pre class="language-text"><code>function effect(fn,options={}){
+  const effectFn = () =&gt;{
+    cleanup(effectFn)
+    //当调用effect注册副作用函数时，将副作用函数复制给activeEffect
+    activeEffect = effectFn
+    //在调用副作用函数之前将当前副作用函数压栈
+    effectStack.push(effectFn)
+    fn()
+    //在当前副作用函数执行完毕后，将当前副作用函数弹出栈，并把activeEffect还原为之前的值
+    effectStack.pop()
+    activeEffect = effectStack[effectStack.length-1]
+  }
+  //将options挂载到effectFn上
+  effectFn.options = options //新增
+  //activeEffect.deps 用来存储所有与该副作用函数相关的依赖集合
+  effectFn.deps = []
+  //执行副作用函数
+  effectFn()
+}
+</code></pre></div><h2 id="_2-8-计算属性computed与lazy"><a href="#_2-8-计算属性computed与lazy" class="header-anchor">#</a> 2.8 计算属性<code>computed</code>与<code>lazy</code></h2> <p>前文介绍了<code>effect</code>函数，它用来注册副作用函数，同时它也允许指定一些选项参数<code>options</code>，例如指定<code>scheduler</code>调度器来控制副作用函数的执行时机和方式；也介绍了用来追踪和收集依赖的<code>track</code>函数，以及用来触发副作用函数重新执行的<code>trigger</code>函数。实际上，综合这些内容，我们就可以实现<code>Vue.js</code>中一个非常重要并且非常有特色的能力 ---计算属性。</p> <p>在深入讲解计算属性之前，我们需要先来聊聊关于懒执行的<code>effect</code>，即<code>lazy</code>的<code>effect</code>。这是什么意思呢？举个例子，现在我们所实现的<code>effect</code>函数会立即执行传递给它的副作用函数，例如：</p> <div class="language- extra-class"><pre class="language-text"><code>effect(
+  //这个函数会立即执行
+  ()=&gt;{
+    console.log(obj.foo)
+  }
+)
+</code></pre></div><p>但在有些场景下，我们并不希望它立即执行，而是希望它在需要的时候踩执行，例如计算属性。这时我们可以在通过<code>options</code>中添加<code>lazy</code>属性来达到目的，如下面的代码所示：</p> <div class="language- extra-class"><pre class="language-text"><code>effect(
+  //指定来lazy 选项，这个函数不会立即执行
+  ()=&gt;{
+    console.log(obj.foo)
+  },
+  //options
+  {
+    lazy:true
+  }
+)
+</code></pre></div><p><code>lazy</code>选项和之前介绍的<code>scheduler</code>一样，它通过<code>options</code>选项对象指定。有了它，我们就可以修改<code>effect</code>函数的实现逻辑了， 当<code>options.lazy</code> 为 <code>true</code>时，则不立即执行副作用函数：</p> <div class="language- extra-class"><pre class="language-text"><code>function effect(fn,options = {}){
+  const effectFn = ()=&gt;{
+    cleanup(effectFn)
+    activeEffect = effectFn
+    effectStack.push(effectFn)
+    fn()
+    effectStack.pop()
+    activeEffect = effectStack[effectStack.length-1]
+  }
+  
+  effectFn.options = options
+  effectFn.deps =[]
+  //只有非lazy的时候， 才执行
+  if(!options.lazy){ // 新增
+     // 执行副作用函数
+    effectFn()
+  }
+  // 将副作用函数作为返回值返回
+  return effectFn //新增
+}
+</code></pre></div><p>通过这个判断，我们就实现了让副作用函数不立即执行的功能。但问题是，副作用函数应该什么时候执行呢？通过上面的代码可以看到，我们将副作用函数<code>effectFn</code> 作为<code>effect</code>函数的返回值，这就意味着当调用<code>effect</code>函数时，通过其返回值能够拿到对应的副作用函数，这样我们就能手动执行该副作用函数了：</p> <div class="language- extra-class"><pre class="language-text"><code>const effectFn = effect(()=&gt;{
+  console.log(obj.foo)
+},{lazy:true})
+
+// 手动执行副作用函数
+effectFn()
+</code></pre></div><p>如果仅仅能够手动执行副作用函数，其意义并不大。但如果我们把传递给<code>effect</code>的函数看作一个<code>getter</code>，那么这个<code>getter</code>函数可以返回任何值，例如：</p> <div class="language- extra-class"><pre class="language-text"><code>const effectFn = effect(
+  //getter 返回 obj.foo 与 obj.bar 的和
+  () =&gt; obj.foo + obj.bar
+  {lazy:true}
+)
+</code></pre></div><p>这样我们在手动执行副作用函数时，就能够拿到其返回值：</p> <div class="language- extra-class"><pre class="language-text"><code>const effectFn = effect(
+  // getter 返回obj.foo 和 obj.bar 的和
+  ()=&gt; obj.foo + obj.bar,
+  {lazy:true}
+)
+
+  //value 是 getter的返回值
+const value = effectFn()
+</code></pre></div><p>为了实现这个目标，我们需要再对<code>effect</code>函数做一些修改，如下所示：</p> <div class="language- extra-class"><pre class="language-text"><code>function effect(fn,options={}){
+	const effectFn = () =&gt;{
+    cleanup(effectFn)
+    activeEffect = effectFn
+    effectStack.push(effectFn)
+    //将fn的执行结果存储到res中
+    const res = fn() //新增
+    effectStack.pop()
+    activeEffect = effectStack[effectStack.length - 1]
+    //将res作为effectFn的返回值
+    return res //新增
+  }
+  effectFn.options = options
+  effectFn.deps = []
+  if(!options.lazy){
+    effectFn()
+  }
+  return effectfn
+}
+</code></pre></div><p>通过新增的代码可以看到，传递给<code>effect</code>函数的参数<code>fn</code>才是真正的副作用函数，而<code>effectFn</code>是我们包装后的副作用函数。</p> <p>为了通过<code>effectFn</code>得到真正的副作用函数<code>fn</code>的执行结果，我们需要将其保存到<code>res</code>变量中，然后将其作为<code>effectFn</code>函数的返回值。</p> <p>现在我们已能够实现依赖执行的副作用函数，并且能够拿到副作用函数的执行结果了，接下来就可以实现计算属性了，如下所示：</p> <div class="language- extra-class"><pre class="language-text"><code>function computed(getter){
+	//把getter作为副作用函数，创建一个lazy的effect
+  const effectFn = effect(getter,{
+    	lazy:true
+  })
+
+  const obj = {
+    // 当读取value时才执行effectFn
+    get value(){
+    	return effectFn()
+    }
+  }
+  return obj
+}
+</code></pre></div><p>首先我们定义一个<code>computed</code>函数，它接收一个<code>getter</code>函数作为参数，我们把<code>getter</code>函数作为副作用函数，用它创建一个<code>lazy</code>的<code>effect</code>。<code>computed</code>函数的执行会返回一个对象，该对象的<code>value</code>属性是一个访问器属性，只有读取<code>value</code>的值时，才会执行<code>effectFn</code>并将其结果作为返回值返回。</p> <p>我们可以使用<code>computed</code>函数来创建一个计算属性：</p> <div class="language- extra-class"><pre class="language-text"><code>const data = {foo:1,bar:2}
+const obj = new Proxy(data,{/*...*/})
+
+const sumRes = computed(()=&gt; obj.foo+obj.bar)
+console.log(sumRes.value) //3
+</code></pre></div><p>可以看到它能够正确地工作， 不过现在我们实现计算属性只做到了懒计算，也就是说，只有当你真正读取<code>sumRes.value</code>的值时，它才会进行计算并得倒值。但是还做不到对值进行缓存，即假如我们多次访问<code>sumRes.value</code>的值，会导致<code>effectFn</code>进行多次计算，即使<code>obj.foo</code>和<code>obj.bar</code>的值本身并没有变化：</p> <div class="language- extra-class"><pre class="language-text"><code>console.log(sumRes.value) // 3
+console.log(sumRes.value) // 3
+console.log(sumRes.value) // 3
+</code></pre></div><p>上面的代码多次访问<code>sumRes.value</code>的值，每次访问都会调用<code>effectFn</code>重新计算。</p> <p>为了解决这个问题，就需要我们在实现<code>computed</code>函数时，添加对值进行缓存的功能，如下代码所示：</p> <div class="language- extra-class"><pre class="language-text"><code>function computed(getter){
+	//value用来缓存上一次计算的值
+  let value
+  //dirty标志，用来表示是否需要重新计算值，为true则意味着“脏”，需要计算
+  let dirty = true
+
+  const effectFn = effect(getter,{
+    lazy:true
+  })
+
+  const obj = {
+    get value(){
+      //只有“脏”时才计算值，并将得到的值缓存到value中
+      if(dirty){
+        value = effectFn()
+        //将dirty设置为false,下一次访问直接使用缓存到value中的值
+        dirty = false
+      }
+      return value
+    }
+  }
+  return obj
+}
+</code></pre></div><p>我们新增了两个变量<code>value</code>和<code>dirty</code>，其中<code>value</code>用来缓存上一次计算的值，而<code>dirty</code>是一个标识，代表是否需要重新计算。 当我们通过<code>sumRes.value</code>访问值时，只有当<code>dirty</code>为<code>true</code>时，才会调用<code>effectFn</code>重新计算值，否则直接使用上一次缓存在<code>value</code>中的值。这样无论我们访问多少次<code>sumRes.value</code>，都只会在第一次访问时进行真正的计算，后续访问都会直接读取缓存的<code>value</code>值。</p> <p>相信你已经看到问题所在了， 如果此时我们修改<code>obj.foo</code>或<code>obj.bar</code>的值，在访问<code>sumRes.value</code>会发现访问到的值没有发生变化：</p> <div class="language- extra-class"><pre class="language-text"><code>const data = {foo:1,bar:2}
+const obj = new Proxy(data,{/*...*/})
+
+const sumRes = computed(()=&gt; obj.foo+obj.bar)
+
+console.log(sumRes.value) //3
+console.log(sumRes.value) //3
+
+//修改obj.foo
+obj.foo++
+
+//再次访问，得到的仍然是3，但预期结果应该是4
+console.log(sumRes.value) //3
+</code></pre></div><p>这是因为，当第一次访问<code>sumRes.value</code>的值后，变量<code>dirty</code>会设置为<code>false</code>，代表不需要计算， 即使我们修改了<code>obj.foo</code>的值，但只要<code>dirty</code>的值为<code>false</code>，就不会重新计算， 所以导致我们得倒了错误的值。</p> <p>解决办法很简单，当<code>obj.foo</code>或<code>obj.bar</code>的值发生变化时，只要<code>dirty</code>的值重置为<code>true</code>就可以了。 那么应该怎么做呢？</p> <p>这时候就用到了上一节介绍的<code>scheduler</code>选项，如下代码所示：</p> <div class="language- extra-class"><pre class="language-text"><code>function computed(getter){
+	let value
+  let dirty = true
+
+  const effectFn = effect(getter,{
+    lazy:true,
+    //添加调度器，在调度器中将dirty重置为true
+    scheduler(){
+      dirty = true
+    }
+  })
+
+  const obj = {
+    get value(){
+      if(dirty){
+        value = effectFn()
+        dirty = false
+      }
+      return value
+    }
+  }
+  return obj
+}
+</code></pre></div><p>我们为<code>effect</code>添加了<code>scheduler</code>调度器函数，它会在<code>getter</code>函数中所依赖的响应式数据变化时执行，这样我们在<code>scheduler</code>函数内将<code>dirty</code>重置为<code>true</code>，当下一次访问<code>sumRes.value</code>时，就会重新调用<code>effectFn</code>计算值，这样就能够得倒预期的结果了。</p> <p>现在，我们设计的计算属性已经趋于完美了，但是还有一个缺陷，它体现在当我们在另外一个<code>effect</code>中读取计算属性时的值：</p> <div class="language- extra-class"><pre class="language-text"><code>const sumRes = computed(()=&gt; obj.foo+obj.bar)
+effect(()=&gt;{
+	//在该副作用函数中读取sumRes.value
+  console.log(sumRes.value)
+})
+//修改obj.foo的值
+obj.foo++
+</code></pre></div><p>如上代码所示，<code>sumRes</code>是一个计算属性， 并且在另一个<code>effect</code>的副作用函数中读取了<code>sumRes.value</code>的值。如果此时修改了<code>obj.foo</code>的值，我们期望副作用函数重新执行，就像我们在<code>Vue.js</code>的模版中读取计算属性值的时候，一旦计算属性发生变化就会触发重新渲染一样。</p> <p>但是如果尝试运行上面这段代码，就会发现修改<code>obj.foo</code>的值并不会触发副作用函数的渲染，因此我们说这是一个缺陷。</p> <p>分析问题的原因，我们发现，从本质上看这就是一个典型的<code>effect</code>潜套。</p> <ul><li>一个计算属性内部拥有自己的<code>effect</code>，并且它是懒执行的，只有当真正读取计算属性的值时才会执行。</li> <li>对于计算属性的<code>getter</code>函数来说，它里面访问的响应式数据只会把<code>computed</code>内部的<code>effect</code>收集为依赖。</li> <li>而当把计算属性用于另外一个<code>effect</code>时，就会发生<code>effect</code>潜套，外层的<code>effect</code>不会被内层<code>effect</code>中的响应式数据收集。</li></ul> <p>解决的办法很简单。当读取计算属性的值时，我们可以手动调用<code>track</code>函数进行追踪；当计算属性依赖的响应式数据发生变化时，我们可以手动调用<code>trigger</code>函数触发响应：</p> <div class="language- extra-class"><pre class="language-text"><code>function computed(getter){
+	let value 
+  let dirty = true
+
+  const effectFn = effect(getter,{
+  	lazy:true,
+    scheduler(){
+      if(!dirty){
+        dirty = true
+        //当计算属性依赖的响应式数据变化时，手动调用trigger函数触发响应
+        trigger(obj,'value')
+      }
+    }
+  })
+
+  const obj = {
+    get value(){
+      if(dirty){
+        value = effectFn()
+        dirty = false
+      }
+      // 当读取value时，手动调用track函数进行追踪
+      track(obj,'value')
+      return value
+    }
+  }
+  return obj
+}
+</code></pre></div><p>如以上代码所示，当读取一个计算属性的<code>value</code>值时，我们手动调用<code>track</code>函数，把计算属性返回的对象<code>obj</code>作为<code>target</code>，同时作为第一个参数传递给<code>track</code>函数。当计算属性所依赖的响应式数据变化时，会执行调度器函数，在调度器函数内手动调用<code>trigger</code>函数触发响应即可。这时，对于如下代码来说：</p> <div class="language- extra-class"><pre class="language-text"><code>effect(function effectFn(){
+  console.log(sumRes.value)
+})
+</code></pre></div><p>它会建立这样的联系：</p> <div class="language- extra-class"><pre class="language-text"><code>computed(obj)
+   L___ value
+      	L___effectFn
+</code></pre></div><p>下图给出了更详细的描述：</p> <p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a643a353da114f039010536c2714798c~tplv-k3u1fbpfcp-zoom-1.image" alt=""></p> <h2 id="_2-9-watch的实现原理"><a href="#_2-9-watch的实现原理" class="header-anchor">#</a> 2.9 <code>watch</code>的实现原理</h2> <p>所谓<code>watch</code>，其本质就是观测一个响应式数据，当数据发生变化时通知并执行相应的回调函数。举个例子：</p> <div class="language- extra-class"><pre class="language-text"><code>watch(obj,()=&gt;{
+	console.log('数据变了')
+})
+
+//修改响应数据的值，会导致回调函数执行
+obj.foo++
+</code></pre></div><p>假设<code>obj</code>是一个响应数据，使用<code>watch</code>函数观测它，并传递一个回调函数，当修改响应式数据的值时，会触发该回调函数执行。</p> <p>实际上，<code>watch</code>的实现本质上就是利用了<code>effect</code>以及<code>options.scheduler</code>选项，如以下代码所示：</p> <div class="language- extra-class"><pre class="language-text"><code>effect(()=&gt;{
+  console.log(obj.foo)
+},{
+  scheduler(){
+    //当obj.foo的值变化时，会执行scheduler调度函数
+  }
+})
+</code></pre></div><p>在一个副作用函数中访问响应式数据<code>obj.foo</code>，通过前面的介绍，我们知道这会在副作用函数与响应式数据之间建立联系，当响应式数据变化时，会触发副作用函数重新执行。</p> <p>但有一个例外，即如果副作用函数存在<code>scheduler</code>选项，当响应式数据发生变化时，会触发<code>scheduler</code>调度函数执行，而非直接触发副作用函数执行。</p> <p>从这个角度来看，其实<code>scheduler</code>调度函数就是相当于一个回调函数，而<code>watch</code>的实现就是利用了这个特点。下面是最简单的<code>watch</code>函数的实现：</p> <div class="language- extra-class"><pre class="language-text"><code>//watch函数接受两个参数，source是响应式数据，cb是回调函数
+function watch(source,cb){
+	effect(
+    //触发读取操作，从而建立联系
+  ()=&gt; source.foo,
+    {
+      scheduler(){
+        //当数据变化时，调用回调函数cb
+        cb()
+      }
+    }
+  )
+}
+</code></pre></div><p>我们可以如下所示使用<code>watch</code>函数：</p> <div class="language- extra-class"><pre class="language-text"><code>const data = {foo:1}
+const obj = new Proxy(data,{/*...*/})
+watch(obj,()=&gt;{
+  console.log('数据变化了')
+})
+obj.foo++
+</code></pre></div><p>上面这段代码能正常工作， 但是我们注意到在<code>watch</code>函数的实现中，硬编码了对<code>source.foo</code>的读取操作。</p> <p>换句话说，现在只能观测<code>obj.foo</code>的改变。为了让<code>watch</code>函数具有通用性，我们需要一个封装一个通用的读取的读取操作：</p> <div class="language- extra-class"><pre class="language-text"><code>function watch(source,cb){
+	effect(
+    // 调用traverse递归地读取
+    ()=&gt; traverse(source),
+    {
+      scheduler(){
+        //当数据变化时，调用回调函数cb
+        cb()
+      }
+    }
+  )
+}
+
+function traverse(value,seen=new Set()){
+  //如果读取的数据是原始值，或者已经被读取过了，那么什么都不做
+  if(typeof value !== 'object' || value === null || seen.has(value)) return
+  //将数据添加到seen中，代表遍历地读取过了， 避免循环引用引起的死循环
+  seen.add(value)
+  //暂时不考虑数组等其他结构
+  //假设value就是一个对象，使用for...in 读取对象的每一个值，并递归调用traverse进行处理
+  for(const k in value){
+    traverse(value[k],seen)
+  }
+  return value
+}
+</code></pre></div><p>如上面的代码所示，在<code>watch</code>内部的<code>effect</code>中调用<code>traverse</code>函数进行递归的读取操作，代替硬编码的方式，这样就能读取一个对象上的任意属性，从而当任意属性发生变化时都能触发回调函数执行。</p> <p><code>watch</code>函数除了可以观测响应式数据，还可以接受一个<code>getter</code>函数：</p> <div class="language- extra-class"><pre class="language-text"><code>watch(
+  //getter函数
+  ()=&gt; obj.foo,
+  //回调函数
+  ()=&gt;{
+    console.log('obj.foo 的值变了')
+  }
+)
+</code></pre></div><p>如以上代码所示，传递给<code>watch</code>函数的第一个参数不再是一个响应式数据，而是一个<code>getter</code>函数。在<code>getter</code>函数内部，用户可以指定该<code>watch</code>依赖哪些响应式数据，只有当这些数据变化时，才会触发回调函数执行。如下代码实现了这一功能：\</p> <div class="language- extra-class"><pre class="language-text"><code>function watch(source,cb){
+  //定义getter
+  let getter
+  //如果source是函数，说明用户传递的是getter，所以直接把source赋值给getter
+  if(typeof source === 'function'){
+    getter = source
+  }else{
+    //否则按照原来的实现调用traverse递归地读取
+    getter = () =&gt; traverse(source)
+  }
+  effect(
+    //执行 getter
+    () =&gt; getter(),
+    {
+      scheduler(){
+        cb()
+    }
+  )
+}
+</code></pre></div><p>首先判断<code>source</code>的类型，如果是函数类型，说明用户直接传递了<code>getter</code>函数， 这时直接使用用户的<code>getter</code>函数；如果不是函数类型，那么保留之前的做法，即调用<code>traverse</code>函数递归地读取。这样就实现了自定义<code>getter</code>的功能，同时使得<code>watch</code>函数更加强大。。</p> <p>仔细观察你可能会注意到，现在的实现还缺少了一个非常重要的能力，即在回调函数中拿不到旧值与新值。通常我们在使用<code>Vue.js</code>中的<code>watch</code>函数时，能够在回调函数中得倒变化前后的值；</p> <div class="language- extra-class"><pre class="language-text"><code>watch(
+  () =&gt; obj.foo,
+  (newValue,oldValue) =&gt;{
+    console.log(newValue,oldValue) // 2,1
+  }
+)
+
+obj.foo++
+</code></pre></div><p>那么如何获得新值与旧值呢？这需要充分利用<code>effect</code>函数的<code>lazy</code>选项 ， 如下代码所示：</p> <div class="language- extra-class"><pre class="language-text"><code>function watch(source,obj){
+	let getter
+  if(typeof source === 'function'){
+    getter = source
+  }else{
+    getter = () =&gt; traverse(source)
+  }
+
+  //定义旧值与新值
+  let objValue, newValue
+  //使用effect注册副作用函数时，开启lazy选项，并把返回值存储到effectFn中以便后续手动调用
+  const effectFn = effect(
+    ()=&gt; getter(),
+    {
+      lazy:true,
+      scheduler(){
+        //在scheduler 中重新执行副作用函数，得到的是新值
+        newValue = effectFn()
+        // 将旧值和新值作为回调函数的参数
+        cb(newValue,oldValue)
+        //更新旧值，不然下一次会得到错误的旧值
+        oldValue = newValue
+      }
+    }
+  )
+  //手动调用副作用函数，拿到的值就是旧值
+  oldValue = effectFn()
+}
+</code></pre></div><p>在这段代码中， 最核心的改动就是使用<code>lazy</code>选项创建了一个懒执行的<code>effect</code>。注意上面代码中最下面的部分，我们手动调用<code>effectFn</code>函数得到的返回值就是旧值，即第一次执行的到的值。</p> <p>当变化发生并触发<code>scheduler</code>调度函数执行时，会重新调用<code>effectFn</code>函数并得到新值，这样我们就拿到了旧值与新值，接着将它们作为参数传递给回调函数<code>cb</code>就可以了。最后一件非常重要的事情是，不要忘记使用新值更新旧值：<code>oldValue = newValue</code>,否则在下一次变更发生时会得到错误的旧值。</p> <h2 id="_2-10-立即执行的watch与回调执行时机"><a href="#_2-10-立即执行的watch与回调执行时机" class="header-anchor">#</a> 2.10 立即执行的<code>watch</code>与回调执行时机</h2> <p>上一节，我们介绍了<code>watch</code>的基本实现。在这个过程中我们认识到，<code>watch</code>的本质其实是对<code>effect</code>的二次封装。本节我们继续讨论关于<code>watch</code>的两个特性：一个是立即执行的回调函数，另一个是回调函数的执行时机。</p> <p>首先来看立即执行的回调函数。默认情况下，一个<code>watch</code>的回调只会在响应式数据发生变化时才执行：</p> <div class="language- extra-class"><pre class="language-text"><code>//回调函数只有在响应式数据obj后续发生变化时才执行
+watch(obj,()=&gt;{
+  console.log('变化了')
+})
+</code></pre></div><p>在<code>Vue.js</code>中可以通过选项参数<code>immdiate</code>来指定回调是否需要立即执行：</p> <div class="language- extra-class"><pre class="language-text"><code>watch(obj,()=&gt;{
+  console.log('变化了')
+},{
+  //回调函数会在watch创建时立即执行一次
+  immediate:true
+})
+</code></pre></div><p>当<code>immediate</code>选项存在并且为<code>true</code>时，回调函数会在该<code>watch</code>创建时立即执行一次。仔细思考就会发现，回调函数的立即执行与后续执行本质上没有任何差异，所以我们可以把<code>scheduler</code>调度函数封装为一个通用函数，分别在初始化和变更时执行它，如下代码所示：</p> <div class="language- extra-class"><pre class="language-text"><code>function watch(source,cb,options ={}){
+  let getter
+  if(typeof source === 'function'){
+    getter = source
+  }else{
+    getter = () =&gt; traverse(source)
+  }
+  let oldValue,newValue
+
+  //提取scheduler调度函数为一个独立的job函数
+  const job = () =&gt; {
+    newValue = effectFn()
+    cb(newValue,oldValue)
+    oldValue = newValue
+  }
+
+  const effectFn = effect(
+    //执行getter
+    () =&gt; getter(),
+    {
+      lazy:true,
+      //使用job函数作为调度函器函数
+      scheduler:job
+    }
+  )
+
+  if(options.immediate){
+    //当immediate为true时立即执行job,从而触发回调执行
+    job()
+  }else{
+    oldValue = effectFn()
+  }
+}
+</code></pre></div><p>这样就实现了回调函数的立即执行功能。由于回调函数是立即执行的，所以第一次回调执行时没有所谓的旧值，因此此时回调函数的<code>oldValue</code>值为<code>undefined</code>，这也是符合预期的。</p> <p>除了指定回调函数为立即执行之外，还可以通过其他选项参数来指定回调函数的执行时机，例如在<code>Vue.js3</code>中使用<code>flush</code>选项来指定：</p> <div class="language- extra-class"><pre class="language-text"><code>watch(obj,()=&gt;{
+  console.log('变化了')
+},{
+  //回调函数会在watch创建时立即执行一次
+  flush:'pre' //还可以指定为'post' | 'sync'
+})
+</code></pre></div><p><code>flush</code>本质上是在指定调度函数的执行时机。前文讲解过如何在微任务队列中执行调度函数<code>scheduler</code>，这与<code>flush</code>的功能相同。当<code>flush</code>的值为<code>'post'</code>时，代表调度函数需要将副作用函数放到一个微任务队列中，并等待<code>DOM</code>更新结束后再执行，我们可以用如下代码进行模拟：</p> <div class="language- extra-class"><pre class="language-text"><code>function watch(source,cb,options ={}){
+	let getter
+  if(typeof source === 'function'){
+    getter = source
+  }else{
+    getter = () =&gt; traverse(source)
+  }
+
+  let oldValue,newValue
+
+  const job = () =&gt;{
+    newValue = effectFn()
+    cb(newValue,oldValue)
+    oldValue = newValue
+  }
+
+  const effectFn = effect(
+    //执行getter
+    ()=&gt; getter(),
+    {
+      lazy:true,
+      scheduler:()=&gt;{
+        //在调度函数中判断flush是否为'post'	，如果是，将其放到微任务队列中执行
+        if(options.flush === 'post'){
+          const p = Promise.resolve()
+          p.then(job)
+        }else{
+          job()
+        }
+      }
+    }
+  )
+
+  if(options.immediate){
+    job()
+  }else{
+    oldValue = effectFn()
+  }
+}
+</code></pre></div><p>如以上代码所示，我们修改了调度器函数<code>scheduler</code>的实现方式，在调度器函数内检测<code>options.flush</code>的值是否为<code>post</code>，如果是，则将<code>job</code>函数放到微任务队列中，从而实现异步延迟执行；否则直接执行<code>job</code>函数，这本质上相当于<code>sync</code>的实现机制，即同步执行。</p> <p>对于<code>options.flush</code>的值为<code>'pre'</code>的情况，我们暂时还没有办法模拟，因为这涉及组件的更新时机，其中<code>'pre'</code>和<code>'post'</code>原本的语义指的就是组件更新前和更新后，不过这并不影响我们理解如何控制回调函数的更新时机。</p> <h2 id="_2-11-过期的副作用"><a href="#_2-11-过期的副作用" class="header-anchor">#</a> 2.11 过期的副作用</h2> <p>竞态问题通常在多进程或多线程编程中被提及，前端工程师可能很少讨论它，但在日常工作中你可能早就遇到过竞态问题相似的场景，举个例子：</p> <div class="language- extra-class"><pre class="language-text"><code>let finalData
+
+watch(obj,async()=&gt;{
+  //发送并等待网络请求
+  const res = await fetch('/path/to/request')
+  //将请求结果赋值给data
+  finalData = res
+})
+</code></pre></div><p>在这段代码中，我们使用<code>watch</code>观测<code>obj</code>对象的变化，每次<code>obj</code>对象发生变化都会发送网络请求，例如请求接口数据，等数据请求成功后，将结果赋值给<code>finalData</code>变量。</p> <p>观察上面的代码，乍一看似乎没什么问题。但仔细思考会发现这段代码会发生竞态问题。</p> <p>假设我们第一次修改<code>obj</code>对象的某个字段值，这会导致回调函数执行，同时发送了第一次请求A 。</p> <p>随着时间的推移，在请求A的结果返回之前，我们对<code>obj</code>对象的某个字段值进行了第二次请求修改，这会导致发生第二次请求B。</p> <p>此时请求A和请求B都在进行中，那么哪一个请求会先返回结果呢？我们不确定，如果请求B先于请求A返回结果，就会导致最终<code>finalData</code>中存储的是A请求的结果，如图所示：</p> <p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f907475f96db46598cb47ce89052b296~tplv-k3u1fbpfcp-zoom-1.image" alt=""></p> <p>但由于请求B是后发送的，因此我们认为请求B返回的数据才是“最新”的，而请求A则应该被视为“过期”的，所以我们希望变量<code>finalData</code>存储的值应该是由请求B返回的结果，而非请求A返回的结果。</p> <p>实际上，我们可以对这个问题做进一步总结。请求A是副作用函数第一次执行所产生的副作用，请求B是副作用函数第二次执行所产生的副作用。由于请求B后发生，所以请求B的结果应该被视为“最新”的，而请求A已经“过期”了，其产生的结果应被视为无效。通过这种方式，就可以避免竞态问题导致的错误结果。</p> <p>归根结底，我们需要的是一个让副作用过期的手段。为了让问题更加清晰，我们先拿<code>Vue.js</code>中的<code>watch</code>函数来浮现场景，看看<code>Vue.js</code>是如何帮助开发者解决这个问题的，然后尝试实现这个功能。</p> <p>在<code>Vue.js</code>中，<code>watch</code>函数的回调函数接受第三个参数<code>onInvalidate</code>，它是一个函数，类似于时间监听器，我们可以用<code>onInvalidate</code>函数注册一个回调，这个回调函数会在当副作用函数过期时执行：</p> <div class="language- extra-class"><pre class="language-text"><code>watch(obj,async(newValue,oldValue,onInvalidate)=&gt;{
+  //定义一个标志，代表当前副作用函数是否过期，默认为false，代表没有过期
+  let expired = false
+  //调用onInvalidate() 函数注册一个过期回调
+  onInvalidate(() =&gt;{
+    //当过期时，将expired设置为true
+    expired = true
+  })
+
+  //发送网络请求
+  const res = await fetch('/path/to/request')
+
+  //只有当该副作用函数的执行没有过期时，才会执行后续操作
+  if(!expired){
+    finalData = res
+  }
+})
+</code></pre></div><p>如上面的代码所示，在发送请求之前，我们定义了<code>expired</code>标志变量，用来标识当前副作用函数的执行是否过期；接着调用<code>onInvalidate</code>函数注册了一个过期回调，当该副作用函数的执行过期时将<code>expired</code>标志变量设置为<code>true</code>；最后只有当没有过期时才采用请求结果，这样就可以有效的避免上述问题了。</p> <p>那么<code>Vue.js</code>是怎么做到的呢？换句话说，<code>onInvalidate</code>的原理是什么呢？其实很简单，在<code>watch</code>内部每次检测到变更后，在副作用函数重新执行之前，会先调用我们通过<code>onInvalidate</code>函数注册的过期回调，仅此而已，如下代码所示：</p> <div class="language- extra-class"><pre class="language-text"><code>function watch(source,cb,options={}){
+  let getter
+  if(typeof source === 'function'){
+    getter = source
+  }else{
+    getter = () =&gt; traverse(source)
+  }
+
+  let oldValue,newValue
+
+  //cleanup 用来存储用户注册的过期回调
+  let cleanup
+  //定义onInvalidate函数  
+  function onInvalidate(fn){
+    //将过期回调存储到cleanup中
+    cleanup = fn
+  }
+
+  const job = ()=&gt;{
+    newValue = effectFn()
+    //在调用回调函数cb之前，先调用过期回调
+    if(cleanup){
+      cleanup()
+    }
+    //将onInvalidate作为回调函数的第三个参数，以便用户使用
+    cb(oldValue,newValue,onInvalidate)
+    oldValue = newValue
+  }
+
+  const effectFn = effect(
+    //执行getter
+    ()=&gt;getter(),
+    {
+      lazy:true,
+      scheduler:()=&gt;{
+        if(options.flush === 'post'){
+          const p = Promise.resolve()
+          p.then(job)
+        }else{
+          job()
+        }
+      }
+    }
+  )
+
+  if(options.immediate){
+    job()
+  }else{
+    oldValue = effectFn()
+  }
+}
+</code></pre></div><p>在这段代码中，我们首先定义了<code>cleanup</code>变量，这个变量用来存储用户通过<code>onInvalidate</code>函数注册的过期函回调。可以看到<code>onInvalidate</code>函数的实现非常简单，只是把过期回赋值给了<code>cleanup</code>变量。这里的关键点在<code>job</code>函数内，每次执行回调函数<code>cb</code>之前，先检查是否存在过期回调，如果存在，则执行过期回调函数<code>cleanup</code>。最后我们把<code>onInvaidate</code>函数作为回调函数的第三个参数传递给<code>cb</code>，以便用户使用。</p> <p>我们还是痛殴一个例子来进一步说明：</p> <div class="language- extra-class"><pre class="language-text"><code>watch(obj,async(newValue,oldValue,onInvalidate)=&gt;{
+  let expired = false
+  onInvalidate(()=&gt;{
+    expired = true
+  })
+
+  const res = await fetch('path/to/request')
+
+  if(!expired){
+    finalData = res
+  }
+})
+
+//第一次修改
+obj.foo++
+setTimeout(()=&gt;{
+  //200ms后做第二次修改
+	obj.foo++
+},200)
+</code></pre></div><p>如上代码所示，我们修改了两次<code>obj.foo</code>的值，第一次修改是立即执行的，这会导致<code>watch</code>的回调函数执行。</p> <p>由于我们在回调函数内调用了<code>onInvalidate</code>，所以会注册一个过期回调，接着发送请求A。</p> <ul><li>假设请求A需要1000ms才能返回结果，而我们在200ms时第二次修改了<code>obj.foo</code>的值，这又会导致<code>watch</code>的回调函数执行。</li> <li>这时需要注意的是，在我们的实现中，每次执行回调函数之前要先检查过期回调是否存在，如果存在，会优先执行过期回调。</li> <li>由于在<code>watch</code>的回调函数第一次执行的时候，我们已经注册了一个过期回调，所以在<code>watch</code>的回调函数第二次执行之前，会优先执行之前注册的过期回调，这会使得第一次执行的副作用函数内闭包的变量<code>expired</code>的值变为<code>true</code>，即副作用函数的执行过期了。</li> <li>于是等请求A的结果返回时，其结果会被抛弃，从而避免了过期的副作用函数带来的影响，如图所示：</li></ul> <p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/540823c6db5d4709bc780fc4c4ddf5de~tplv-k3u1fbpfcp-zoom-1.image" alt=""></p> <h1 id="三、总结"><a href="#三、总结" class="header-anchor">#</a> 三、总结</h1> <ul><li><p>首先介绍了副作用函数和响应式数据的概念，以及它们之间的关系。</p> <ul><li>一个响应式数据最基本的实现依赖于对“读取”和“设置”操作的拦截，从而在副作用函数与响应式数据之间建立联系。</li> <li>当“读取”操作发生时，我们将当前执行的副作用函数存储到“桶”中；</li> <li>当“设置”操作发生时，再将副作用函数从“桶”里取出并执行</li></ul></li></ul> <p>以上就是响应式系统的根本实现原理。</p> <ul><li><p>接着，我们实现了一个相对完善的响应系统。</p> <ul><li>使用<code>WeakMap</code>配合<code>Map</code>构建了新的“桶”结构，从而能够在响应式数据与副作用函数之间建立更加精确的联系。</li> <li>同时，也介绍了<code>WeakMap</code>与<code>Map</code>这两个数据结构的区别：
+<ul><li><code>WeakMap</code>是弱引用，它不影响垃圾回收器的工作。</li> <li>当用户代码对一个对象没有引用关系时，<code>WeakMap</code>不回阻止垃圾回收器回收该对象</li></ul></li></ul></li></ul> <ul><li><p>讨论了分支切换导致的冗余副作用问题，这个问题会导致副作用函数进行不必要的更新。</p> <ul><li><p>为了解决这个问题，我们需要在每次副作用函数重新执行之前， 清除上一次建立的响应联系，而当副作用函数重新执行后，会再次建立新的响应联系，新的响应联系中不存在冗余副作用问题，从而解决了问题。</p></li> <li><p>但在此过程中，我们还遇到了便历<code>Set</code>数据结构导致无限循环的新问题，</p> <ul><li>该问题产生的原因可以从<code>ECMA</code>规范中得知：即“在调用<code>forEach</code>遍历<code>Set</code>集合时，如果一个值已经被访问过了，但这个值被删除并重新添加到集合，如果此时<code>forEach</code>遍历没有结束，那么这个值会被重新访问”。</li> <li>解决方案是建立一个新的<code>Set</code>数据结构用来遍历。</li></ul></li></ul></li> <li><p>讨论了关于嵌套的副作用函数的问题。在实际场景中，嵌套的副作用函数发生在组件嵌套的场景中，即父子组件关系。</p> <ul><li><p>这时为了避免在响应式数据与副作用函数之间建立的响应联系发生错乱，我们需要使用副作用函数栈来存储不同的副作用函数。</p> <ul><li>当一个副作用函数执行完毕后，将其从栈中弹出。</li> <li>当读取响应式数据的时候，被读取的响应式数据只会与当前栈顶的副作用函数建立响应联系，从而解决问题。</li></ul></li> <li><p>而后，我们遇到了副作用函数无限递归调用自身，导致栈溢出的问题。</p> <ul><li>该问题的根本原因在于，对响应式数据的读取和设置操作发生在同一个副作用函数内。</li> <li>解决办法很简单：<strong>如果</strong><code>trigger</code><strong>触发执行的副作用函数与当前正在执行的副作用函数相同，则不触发执行。</strong></li></ul></li></ul></li></ul> <ul><li><p>随后，我们讨论了响应系统的可调度性。</p> <ul><li>所谓可调度，指的是当<code>trigger</code>动作触发副作用函数重新执行时，有能力决定副作用函数执行的实机、次数以及方式。</li> <li>为了实现调度能力，我们为<code>effect</code>函数增加了第二个选项参数，可以通过<code>scheduler</code>选项指定调用器，这样用户可以通过调度器自行完成任务的调度。</li> <li>如何通过调度器实现任务去重，即通过一个微任务队列对任务进行缓存，从而实现去重。</li></ul></li> <li><p>而后，讲解了计算属性，即<code>computed</code>。</p> <ul><li>计算属性实际上是一个懒执行的副作用函数，我们通过<code>lazy</code>选项使得副作用函数可以懒执行。</li> <li>被标记为懒执行的副作用函数可以通过手动方式让其执行。</li> <li>利用这个特点，我们设计了计算属性，当读取计算属性的值时，只需要手动执行副作用函数即可。</li> <li>当计算属性依赖的响应式数据发生变化时，会通过<code>scheduler</code>将<code>dirty</code>标记设置为<code>true</code>，代表“脏”。</li> <li>这样，下次读取计算属性的值时，我们会重新计算真正的值。</li></ul></li> <li><p>之后，我们讨论了<code>watch</code>的实现原理，它本质上利用了副作用函数重新执行时的可调度行。</p> <ul><li>一个<code>watch</code>本身会创建一个<code>effect</code>，当这个<code>effect</code>依赖的响应式数据发生变化时，会执行该<code>scheduler</code>中执行用户通过<code>watch</code>函数注册的回调函数即可。</li> <li>此外，讲解了理解执行回调的<code>watch</code>，通过添加新的<code>immediate</code>选项来实现</li> <li>还讨论了，如何控制回调函数的执行时机，通过<code>flush</code>选项来制定回调函数具体的执行时机，本质上是利用了调用器和一步的微任务队列。</li></ul></li> <li><p>最后，我们讨论了过期的副作用函数，他会导致竞态问题。</p> <ul><li>为了解决这个问题，<code>Vue.js</code>为<code>watch</code>的回调函数设计了第三个参数，即<code>onInvalidate</code>。
+<ul><li>它是一个函数，用来注册过期回调。</li> <li>每当<code>watch</code>的回调函数执行之前，会优先执行用户通过<code>onInvalidate</code>注册的过期回调。</li> <li>这样，用户就有机会在过期回调中将上一次的副作用标记为“过期”，从而解决竞态问题。</li></ul></li></ul></li></ul></div></section> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev"><a href="/vuejs3.0/part-03.html" class="prev">
+          第3章 Vue.js3的设计思路
+        </a></span> <span class="next"><a href="/handbook/ConditionalTypes.html">
+          条件类型
+        </a></span></p></div> <div class="comments-wrapper"><!----></div> <ul class="side-bar sub-sidebar-wrapper" style="width:12rem;" data-v-ac050c62><li class="level-2" data-v-ac050c62><a href="/vuejs3.0/part-04.html#_2-1-响应式数据与副作用函数" class="sidebar-link reco-side-_2-1-响应式数据与副作用函数" data-v-ac050c62>2.1 响应式数据与副作用函数</a></li><li class="level-2" data-v-ac050c62><a href="/vuejs3.0/part-04.html#_2-2-响应式数据的基本实现" class="sidebar-link reco-side-_2-2-响应式数据的基本实现" data-v-ac050c62>2.2 响应式数据的基本实现</a></li><li class="level-2" data-v-ac050c62><a href="/vuejs3.0/part-04.html#_2-3-设计一个完善的响应系统" class="sidebar-link reco-side-_2-3-设计一个完善的响应系统" data-v-ac050c62>2.3 设计一个完善的响应系统</a></li><li class="level-2" data-v-ac050c62><a href="/vuejs3.0/part-04.html#_2-4-分支切换与cleanup" class="sidebar-link reco-side-_2-4-分支切换与cleanup" data-v-ac050c62>2.4 分支切换与cleanup</a></li><li class="level-2" data-v-ac050c62><a href="/vuejs3.0/part-04.html#_2-5-嵌套与effect与effect栈" class="sidebar-link reco-side-_2-5-嵌套与effect与effect栈" data-v-ac050c62>2.5 嵌套与effect与effect栈</a></li><li class="level-2" data-v-ac050c62><a href="/vuejs3.0/part-04.html#_2-6-避免无限递归循环" class="sidebar-link reco-side-_2-6-避免无限递归循环" data-v-ac050c62>2.6 避免无限递归循环</a></li><li class="level-2" data-v-ac050c62><a href="/vuejs3.0/part-04.html#_2-7-调度执行" class="sidebar-link reco-side-_2-7-调度执行" data-v-ac050c62>2.7 调度执行</a></li><li class="level-2" data-v-ac050c62><a href="/vuejs3.0/part-04.html#_2-8-计算属性computed与lazy" class="sidebar-link reco-side-_2-8-计算属性computed与lazy" data-v-ac050c62>2.8 计算属性computed与lazy</a></li><li class="level-2" data-v-ac050c62><a href="/vuejs3.0/part-04.html#_2-9-watch的实现原理" class="sidebar-link reco-side-_2-9-watch的实现原理" data-v-ac050c62>2.9 watch的实现原理</a></li><li class="level-2" data-v-ac050c62><a href="/vuejs3.0/part-04.html#_2-10-立即执行的watch与回调执行时机" class="sidebar-link reco-side-_2-10-立即执行的watch与回调执行时机" data-v-ac050c62>2.10 立即执行的watch与回调执行时机</a></li><li class="level-2" data-v-ac050c62><a href="/vuejs3.0/part-04.html#_2-11-过期的副作用" class="sidebar-link reco-side-_2-11-过期的副作用" data-v-ac050c62>2.11 过期的副作用</a></li></ul></main></div> <!----></div></div></div></div><div class="global-ui"><div class="back-to-ceiling" style="right:1rem;bottom:6rem;width:2.5rem;height:2.5rem;border-radius:.25rem;line-height:2.5rem;display:none;" data-v-c6073ba8 data-v-c6073ba8><svg t="1574745035067" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5404" class="icon" data-v-c6073ba8><path d="M526.60727968 10.90185116a27.675 27.675 0 0 0-29.21455937 0c-131.36607665 82.28402758-218.69155461 228.01873535-218.69155402 394.07834331a462.20625001 462.20625001 0 0 0 5.36959153 69.94390903c1.00431239 6.55289093-0.34802892 13.13561351-3.76865779 18.80351572-32.63518765 54.11355614-51.75690182 118.55860487-51.7569018 187.94566865a371.06718723 371.06718723 0 0 0 11.50484808 91.98906777c6.53300375 25.50556257 41.68394495 28.14064038 52.69160883 4.22606766 17.37162448-37.73630017 42.14135425-72.50938081 72.80769204-103.21549295 2.18761121 3.04276886 4.15646224 6.24463696 6.40373557 9.22774369a1871.4375 1871.4375 0 0 0 140.04691725 5.34970492 1866.36093723 1866.36093723 0 0 0 140.04691723-5.34970492c2.24727335-2.98310674 4.21612437-6.18497483 6.3937923-9.2178004 30.66633723 30.70611158 55.4360664 65.4791928 72.80769147 103.21549355 11.00766384 23.91457269 46.15860503 21.27949489 52.69160879-4.22606768a371.15156223 371.15156223 0 0 0 11.514792-91.99901164c0-69.36717486-19.13165746-133.82216804-51.75690182-187.92578088-3.42062944-5.66790279-4.76302748-12.26056868-3.76865837-18.80351632a462.20625001 462.20625001 0 0 0 5.36959269-69.943909c-0.00994388-166.08943902-87.32547796-311.81420293-218.6915546-394.09823051zM605.93803103 357.87693858a93.93749974 93.93749974 0 1 1-187.89594924 6.1e-7 93.93749974 93.93749974 0 0 1 187.89594924-6.1e-7z" p-id="5405" data-v-c6073ba8></path><path d="M429.50777625 765.63860547C429.50777625 803.39355007 466.44236686 1000.39046097 512.00932183 1000.39046097c45.56695499 0 82.4922232-197.00623328 82.5015456-234.7518555 0-37.75494459-36.9345906-68.35043303-82.4922232-68.34111062-45.57627738-0.00932239-82.52019037 30.59548842-82.51086798 68.34111062z" p-id="5406" data-v-c6073ba8></path></svg></div></div></div>
+    <script src="/assets/js/app.801581fb.js" defer></script><script src="/assets/js/3.db9065b5.js" defer></script><script src="/assets/js/1.382b7b04.js" defer></script><script src="/assets/js/17.31029e58.js" defer></script>
+  </body>
+</html>

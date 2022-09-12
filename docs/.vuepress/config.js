@@ -1,7 +1,9 @@
 module.exports = {
-  head:[
+  head: [
     [
-        'script',{},`
+      "script",
+      {},
+      `
         var _hmt = _hmt || [];
         (function() {
         var hm = document.createElement("script");
@@ -9,16 +11,16 @@ module.exports = {
         var s = document.getElementsByTagName("script")[0]; 
         s.parentNode.insertBefore(hm, s);
         })();
-        `
-    ]
+        `,
+    ],
   ],
-   plugins: [
+  plugins: [
     [
-      '@vuepress/google-analytics',
+      "@vuepress/google-analytics",
       {
-        'ga': '' // UA-00000000-0
-      }
-    ]
+        ga: "", // UA-00000000-0
+      },
+    ],
   ],
   theme: "reco",
   locales: {
@@ -30,10 +32,10 @@ module.exports = {
   description:
     "阿源 Hecate的博客 记录前端学习、日常生活、阅读、美食、运动等感想日记",
   themeConfig: {
-    subSidebar: 'auto',
+    subSidebar: "auto",
     logo: "/assets/img/logo.png",
-    base: '/ayuan-blog/',
-    lastUpdated:'上次更新：',//上次更新
+    base: "/ayuan-blog/",
+    lastUpdated: "上次更新：", //上次更新
     nav: [
       { text: "首页", link: "/" },
       {
@@ -57,6 +59,19 @@ module.exports = {
         path: "/",
         collapsable: false, //不折叠
         children: [{ title: "学前必读", path: "/" }],
+      },
+
+      {
+        title: "Vue.js设计与实现",
+        path: "/handbook/ConditionalTypes",
+        collapsable: false, //不折叠
+        children: [
+          { title: "前言：全书讲什么？", path: "/vuejs3.0/part-about" },
+          { title: "第1章 权衡的艺术", path: "/vuejs3.0/part-01" },
+          { title: "第2章 框架设计的核心要素", path: "/vuejs3.0/part-02" },
+          { title: "第3章 Vue.js3的设计思路", path: "/vuejs3.0/part-03" },
+          { title: "第4章 响应系统的作用与实现", path: "/vuejs3.0/part-04" },
+        ],
       },
       {
         title: "基础学习",
