@@ -120,6 +120,21 @@ module.exports = {
         ],
       },
       {
+        title:"Vue.js 3.0 摸爬滚打",
+        path:"/vue3study/day01",
+        collapsable:false,
+        children:[
+            {
+                title:"01-Vue3.0自我介绍",
+                path:"/vue3study/day01",
+            },
+            {
+                title:"02-Vue3.0-组合式API自我介绍",
+                path:"/vue3study/day02",
+            }
+        ]
+      },
+      {
         title: "摸爬滚打的算法之旅",
         path: "/handbook/index",
         collapsable: true, //不折叠
@@ -157,6 +172,26 @@ module.exports = {
           {
             title: "598.范围求和 II",
             path: "/handbook/leetcode-598",
+          },
+        ],
+      },
+      {
+        title: "手写题",
+        path: "/dailyQuestion/dailyQuestion",
+        collapsable: false, //不折叠
+        children: [
+          {
+            title:
+              "《深入浅出Vue.js》Day-01:元编程概念+Vue解决问题的思路+什么渐进式框架",
+            path: "/vueblog/part-01",
+          },
+          {
+            title: "《深入浅出Vue.js》Day02:如何变化侦测Object？",
+            path: "/vueblog/part-02",
+          },
+          {
+            title: "《深入浅出Vue.js》Day03:如何变化侦测Array？",
+            path: "/vueblog/part-03",
           },
         ],
       },
